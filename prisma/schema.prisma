@@ -11,3 +11,321 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id            String  @id
+  name          String
+  email         String
+  password      String?
+  emailVerified Boolean @default(false)
+  image         String?
+
+  role UserRole @default(USER)
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  fileAssets      FileAsset[]      @relation("UploadedByUser")
+  staffProfile    StaffProfile?
+  investorProfile InvestorProfile?
+  auditLogs       AuditLog[]       @relation("ActorAuditLogs")
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+/// Central file registry for all uploaded files.
+/// Store only metadata here; actual binary lives in S3, UploadThing, Cloudinary, etc.
+model FileAsset {
+  id              String  @id @default(cuid())
+  fileName        String
+  originalName    String?
+  mimeType        String?
+  extension       String?
+  sizeBytes       BigInt?
+  storageKey      String  @unique
+  storageBucket   String?
+  storageProvider String?
+  url             String?
+  checksumSha256  String?
+
+  type       FileAssetType       @default(OTHER)
+  visibility FileAssetVisibility @default(PRIVATE)
+
+  uploadedById String?
+  uploadedBy   User?   @relation("UploadedByUser", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  investorProfilesAsAvatar InvestorProfile[] @relation("InvestorAvatar")
+
+  kycDocuments KycDocument[]
+  testimonies  Testimony[]
+
+  @@index([uploadedById])
+  @@index([type])
+  @@index([visibility])
+  @@map("file_asset")
+}
+
+/// For admins, moderators, support or internal staff
+model StaffProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title      String?
+  department String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("staff_profile")
+}
+
+/// End-user / investor profile
+model InvestorProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  phoneNumber  String?
+  dateOfBirth  DateTime?
+  country      String?
+  state        String?
+  city         String?
+  addressLine1 String?
+  addressLine2 String?
+
+  kycStatus KycStatus @default(NOT_STARTED)
+
+  avatarFileId String?
+  avatarFile   FileAsset? @relation("InvestorAvatar", fields: [avatarFileId], references: [id], onDelete: SetNull)
+
+  investmentAccounts InvestmentAccount[]
+
+  kycDocuments KycDocument[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([kycStatus])
+  @@index([avatarFileId])
+  @@map("investor_profile")
+}
+
+/// The customer’s actual retirement/investment account
+model InvestmentAccount {
+  id                String  @id @default(cuid())
+  investorProfileId String
+  retirementPlanId  String?
+
+  investorProfile InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+
+  accountNumber String                @unique
+  type          InvestmentAccountType @default(RETIREMENT)
+  status        AccountStatus         @default(PENDING)
+  openedAt      DateTime?
+  closedAt      DateTime?
+
+  currency String @default("USD")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([investorProfileId])
+  @@index([status])
+  @@map("investment_account")
+}
+
+/// KYC document records point to FileAsset
+model KycDocument {
+  id                String @id @default(cuid())
+  investorProfileId String
+  fileAssetId       String
+
+  investorProfile InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+  fileAsset       FileAsset       @relation(fields: [fileAssetId], references: [id], onDelete: Cascade)
+
+  documentType String
+  status       KycStatus @default(PENDING_REVIEW)
+  reviewedById String?
+  reviewedAt   DateTime?
+  notes        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([investorProfileId])
+  @@index([fileAssetId])
+  @@index([status])
+  @@map("kyc_document")
+}
+
+/// Internal audit log for admin/moderator/sensitive actions
+model AuditLog {
+  id          String  @id @default(cuid())
+  actorUserId String?
+  actorUser   User?   @relation("ActorAuditLogs", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  action      String
+  entityType  String
+  entityId    String?
+  description String?
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([actorUserId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_log")
+}
+
+/// testimonials and reviews
+model Testimony {
+  id          String          @id @default(cuid())
+  fullName    String
+  roleOrTitle String?
+  company     String?
+  message     String
+  rating      Int?
+  isFeatured  Boolean         @default(false)
+  status      TestimonyStatus @default(DRAFT)
+
+  avatarFileId String?
+  avatarFile   FileAsset? @relation(fields: [avatarFileId], references: [id], onDelete: SetNull)
+
+  sortOrder   Int       @default(0)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([isFeatured])
+  @@index([sortOrder])
+  @@index([avatarFileId])
+  @@map("testimony")
+}
+
+/// enums and constants
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum AccountStatus {
+  PENDING
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum InvestmentAccountType {
+  RETIREMENT
+  SAVINGS
+  INVESTMENT
+  BILLS
+  VEHICLE
+  HOME
+  OTHER
+}
+
+enum InvestmentStatus {
+  PENDING_CONFIRMATION
+  CONFIRMED
+  REJECTED
+  CANCELLED
+  PAID
+  PENDING_PAYMENT
+  PARTIALLY_PAID
+}
+
+enum KycStatus {
+  NOT_STARTED
+  PENDING_REVIEW
+  VERIFIED
+  REJECTED
+}
+
+enum DocumentType {
+  ID_FRONT
+  ID_BACK
+  PROOF_OF_ADDRESS
+  DRIVER_LICENSE
+  PASSPORT
+}
+
+enum FileAssetType {
+  AVATAR
+  DOCUMENT
+  KYC_DOCUMENT
+  REPORT
+  OTHER
+}
+
+enum FileAssetVisibility {
+  PRIVATE
+  INTERNAL
+  PUBLIC
+}
+
+enum TestimonyStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}

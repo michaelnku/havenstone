@@ -1,0 +1,27 @@
+import { STAFF_LOGIN_REDIRECT, DEFAULT_LOGIN_REDIRECT } from "@/routes";
+
+type KnownRole = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
+type StaffRole = Exclude<KnownRole, "USER">;
+
+const ROLE_DASHBOARD: Record<KnownRole, string> = {
+  SUPER_ADMIN: STAFF_LOGIN_REDIRECT,
+  ADMIN: STAFF_LOGIN_REDIRECT,
+  MODERATOR: STAFF_LOGIN_REDIRECT,
+  USER: DEFAULT_LOGIN_REDIRECT,
+};
+
+const STAFF_ROLES = new Set<StaffRole>(["ADMIN", "SUPER_ADMIN", "MODERATOR"]);
+
+export const getDashboardRedirectForRole = (
+  role: string | null | undefined,
+): string | null => {
+  if (!role) return null;
+  return ROLE_DASHBOARD[role as KnownRole] ?? null;
+};
+
+export const isStaffRole = (
+  role: string | null | undefined,
+): role is StaffRole => {
+  if (!role) return false;
+  return STAFF_ROLES.has(role as StaffRole);
+};
