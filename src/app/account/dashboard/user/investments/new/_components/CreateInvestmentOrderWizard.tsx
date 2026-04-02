@@ -329,7 +329,10 @@ export function CreateInvestmentOrderWizard({
             />
           ) : null}
 
-          {effectiveStep === 4 && selectedPlan && selectedTypeOption ? (
+          {effectiveStep === 4 &&
+          selectedPlan &&
+          selectedType &&
+          selectedTypeOption ? (
             <InvestmentReviewStep
               plan={selectedPlan}
               investmentTypeValue={selectedType}
