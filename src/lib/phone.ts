@@ -1,4 +1,20 @@
 const E164_MAX_DIGITS = 15;
+const COMMON_CALLING_CODES = [
+  "1",
+  "20",
+  "27",
+  "33",
+  "34",
+  "44",
+  "49",
+  "52",
+  "61",
+  "81",
+  "91",
+  "234",
+  "254",
+  "971",
+] as const;
 
 type NormalizePhoneInput = {
   countryCallingCode: string;
@@ -53,4 +69,61 @@ export function isValidPhoneInput(
   } catch {
     return false;
   }
+}
+
+export function getDefaultCountryCallingCode(country?: string | null) {
+  const normalizedCountry = country?.trim().toLowerCase();
+
+  switch (normalizedCountry) {
+    case "united states":
+    case "usa":
+    case "us":
+    case "canada":
+      return "+1";
+    case "nigeria":
+      return "+234";
+    case "united kingdom":
+    case "uk":
+      return "+44";
+    default:
+      return "+1";
+  }
+}
+
+export function splitE164PhoneNumber(
+  value: string | null | undefined,
+  country?: string | null,
+) {
+  if (!value?.trim()) {
+    return {
+      countryCallingCode: getDefaultCountryCallingCode(country),
+      nationalNumber: "",
+    };
+  }
+
+  const normalized = value.trim();
+  const digits = digitsOnly(normalized);
+
+  if (!normalized.startsWith("+") || !digits) {
+    return {
+      countryCallingCode: getDefaultCountryCallingCode(country),
+      nationalNumber: normalized,
+    };
+  }
+
+  const matchedCallingCode = [...COMMON_CALLING_CODES]
+    .sort((left, right) => right.length - left.length)
+    .find((code) => digits.startsWith(code));
+
+  if (!matchedCallingCode) {
+    return {
+      countryCallingCode: getDefaultCountryCallingCode(country),
+      nationalNumber: digits,
+    };
+  }
+
+  return {
+    countryCallingCode: `+${matchedCallingCode}`,
+    nationalNumber: digits.slice(matchedCallingCode.length),
+  };
 }

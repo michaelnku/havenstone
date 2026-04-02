@@ -53,7 +53,7 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Investment Profile",
-          href: "/account/dashboard/user/profile",
+          href: "/account/dashboard/user/investment-profile",
           icon: User,
         },
         {
@@ -62,8 +62,8 @@ export const DASHBOARD_MENU = {
           icon: Wallet,
         },
         {
-          name: "Investment Plans",
-          href: "/account/dashboard/user/investment-plans",
+          name: "Manage Investments",
+          href: "/account/dashboard/user/investments",
           icon: Landmark,
         },
         {

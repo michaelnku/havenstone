@@ -111,6 +111,8 @@ model FileAsset {
   uploadedById String?
   uploadedBy   User?   @relation("UploadedByUser", fields: [uploadedById], references: [id], onDelete: SetNull)
 
+  investmentIcons Investment[] @relation("InvestmentIconAsset")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -174,17 +176,16 @@ model InvestorProfile {
 
 /// The customer’s actual investment account
 model InvestmentAccount {
-  id                String  @id @default(cuid())
+  id                String @id @default(cuid())
   investorProfileId String
-  investmentPlanId  String?
+  investmentPlanId  String
 
   investorProfile InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+  investmentPlan  InvestmentPlan  @relation(fields: [investmentPlanId], references: [id], onDelete: Restrict)
 
-  accountNumber String                @unique
-  type          InvestmentAccountType @default(RETIREMENT)
-  status        AccountStatus         @default(PENDING)
-  openedAt      DateTime?
-  closedAt      DateTime?
+  status   AccountStatus @default(PENDING)
+  openedAt DateTime?
+  closedAt DateTime?
 
   currency String @default("USD")
 
@@ -192,8 +193,74 @@ model InvestmentAccount {
   updatedAt DateTime @updatedAt
 
   @@index([investorProfileId])
+  @@index([investmentPlanId])
   @@index([status])
   @@map("investment_account")
+}
+
+model Investment {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  description String?
+
+  type      InvestmentType          @default(CRYPTO)
+  period    InvestmentPeriod        @default(LONG_TERM)
+  status    InvestmentCatalogStatus @default(ACTIVE)
+  riskLevel InvestmentRiskLevel     @default(MODERATE)
+
+  iconFileAssetId String?
+  iconFileAsset   FileAsset? @relation("InvestmentIconAsset", fields: [iconFileAssetId], references: [id], onDelete: SetNull)
+
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  investmentPlans InvestmentPlan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([period])
+  @@index([status])
+  @@index([riskLevel])
+  @@index([isActive])
+  @@index([sortOrder])
+  @@index([iconFileAssetId])
+  @@map("investment")
+}
+
+model InvestmentPlan {
+  id           String @id @default(cuid())
+  investmentId String
+
+  name String
+  slug String @unique
+
+  description String?
+
+  category InvestmentPlanCategory @default(PERSONAL_RETIREMENT)
+  period   InvestmentPeriod       @default(LONG_TERM)
+
+  minAmount Decimal @db.Decimal(18, 2)
+  maxAmount Decimal @db.Decimal(18, 2)
+
+  currency String  @default("USD")
+  isActive Boolean @default(true)
+
+  investment Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+
+  investmentAccounts InvestmentAccount[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([investmentId])
+  @@index([category])
+  @@index([period])
+  @@index([isActive])
+  @@map("investment_plan")
 }
 
 /// KYC document records point to FileAsset
@@ -284,13 +351,15 @@ enum AccountStatus {
   CLOSED
 }
 
-enum InvestmentAccountType {
-  RETIREMENT
-  SAVINGS
-  INVESTMENT
-  BILLS
+enum InvestmentPlanCategory {
+  PERSONAL_RETIREMENT
+  CHILD_EDUCATION
+  HOME_OWNERSHIP
   VEHICLE
-  HOME
+  EMERGENCY_FUND
+  WEALTH_BUILDING
+  INCOME_GENERATION
+  CAPITAL_PRESERVATION
   OTHER
 }
 
@@ -302,6 +371,36 @@ enum InvestmentStatus {
   PAID
   PENDING_PAYMENT
   PARTIALLY_PAID
+}
+
+enum InvestmentType {
+  STOCKS
+  BONDS
+  MUTUAL_FUNDS
+  ETFS
+  CRYPTO
+  REAL_ESTATE
+  COMMODITIES
+  OTHER
+}
+
+enum InvestmentPeriod {
+  SHORT_TERM
+  MEDIUM_TERM
+  LONG_TERM
+}
+
+enum InvestmentCatalogStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum InvestmentRiskLevel {
+  LOW
+  MODERATE
+  HIGH
 }
 
 enum KycStatus {

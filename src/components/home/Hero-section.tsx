@@ -50,7 +50,7 @@ export function HeroSection() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
-              href="/get-started"
+              href="/auth/get-started"
               className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/8 bg-[linear-gradient(135deg,#2563eb_0%,#3b82f6_55%,#60a5fa_100%)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_45px_rgba(37,99,235,0.34)]"
             >
               Get Started
