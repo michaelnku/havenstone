@@ -2,10 +2,10 @@ type KnownRole = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 type StaffRole = Exclude<KnownRole, "USER">;
 
 const ROLE_DASHBOARD: Record<KnownRole, string> = {
-  SUPER_ADMIN: "/account/dashboard/super-admin",
-  ADMIN: "/account/dashboard/admin",
-  MODERATOR: "/account/dashboard/moderator",
-  USER: "/account/dashboard/user",
+  SUPER_ADMIN: "/",
+  ADMIN: "/",
+  MODERATOR: "/",
+  USER: "/",
 };
 
 const STAFF_ROLES = new Set<StaffRole>(["ADMIN", "SUPER_ADMIN", "MODERATOR"]);

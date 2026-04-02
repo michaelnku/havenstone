@@ -32,7 +32,7 @@ export default async function OnboardingPage() {
   }
 
   if (user.investorProfile || user.hasCompletedOnboarding) {
-    redirect("/account/dashboard");
+    redirect("/");
   }
 
   return <OnboardingDialog userName={user.name} />;

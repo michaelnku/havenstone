@@ -1,77 +1,91 @@
+import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
-  BarChart2,
-  Wallet,
   User,
-  BadgeCheck,
-  FolderOpen,
-  HistoryIcon,
-  FileChartColumn,
-  Clock,
-  Mail,
-  HelpCircle,
-  Settings,
-  Activity,
-  Users,
-  Receipt,
+  Wallet,
   ShieldCheck,
-  Scale,
-  Award,
-  Briefcase,
-  HardDrive,
-  ShieldAlert,
-  AlertTriangle,
-  Building2,
-  Landmark,
   FileText,
-  CreditCard,
+  Landmark,
+  LineChart,
+  Bell,
+  Settings,
+  BadgeCheck,
+  FolderCheck,
+  Users,
+  SearchCheck,
+  ClipboardList,
+  Activity,
+  Briefcase,
+  Building2,
+  ScrollText,
+  BarChart3,
+  CircleDollarSign,
+  UserCog,
 } from "lucide-react";
 
 export type DashboardRole = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 
-export type DashboardNavLink = {
+export type DashboardMenuLink = {
   name: string;
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
+  badge?: string;
+  exact?: boolean;
 };
 
-export type DashboardNavSection = {
+export type DashboardMenuSection = {
   title: string;
-  links: DashboardNavLink[];
+  links: DashboardMenuLink[];
 };
 
-export type DashboardNavConfig = Record<DashboardRole, DashboardNavSection[]>;
+export const DASHBOARD_HOME_BY_ROLE: Record<DashboardRole, string> = {
+  USER: "/account/dashboard/user",
+  MODERATOR: "/account/dashboard/moderator",
+  ADMIN: "/account/dashboard/admin",
+  SUPER_ADMIN: "/account/dashboard/super-admin",
+};
 
-export const dashboardNavConfig: DashboardNavConfig = {
+export const DASHBOARD_MENU: Record<DashboardRole, DashboardMenuSection[]> = {
   USER: [
     {
       title: "Overview",
       links: [
         {
           name: "Dashboard",
-          href: "/account/dashboard",
+          href: "/account/dashboard/user",
           icon: LayoutDashboard,
+          exact: true,
         },
+      ],
+    },
+    {
+      title: "Portfolio",
+      links: [
         {
-          name: "Portfolio",
-          href: "/account/dashboard/user/portfolio",
-          icon: BarChart2,
+          name: "Investment Profile",
+          href: "/account/dashboard/user/profile",
+          icon: User,
         },
         {
           name: "Investment Accounts",
           href: "/account/dashboard/user/accounts",
           icon: Wallet,
         },
+        {
+          name: "Retirement Plans",
+          href: "/account/dashboard/user/retirement-plans",
+          icon: Landmark,
+        },
+        {
+          name: "Performance",
+          href: "/account/dashboard/user/performance",
+          icon: LineChart,
+        },
       ],
     },
     {
-      title: "Identity & Verification",
+      title: "Verification",
       links: [
-        {
-          name: "Profile",
-          href: "/account/dashboard/user/profile",
-          icon: User,
-        },
         {
           name: "KYC Verification",
           href: "/account/dashboard/user/kyc",
@@ -80,42 +94,7 @@ export const dashboardNavConfig: DashboardNavConfig = {
         {
           name: "Documents",
           href: "/account/dashboard/user/documents",
-          icon: FolderOpen,
-        },
-      ],
-    },
-    {
-      title: "Activity",
-      links: [
-        {
-          name: "Transaction History",
-          href: "/account/dashboard/user/history",
-          icon: HistoryIcon,
-        },
-        {
-          name: "Statements & Reports",
-          href: "/account/dashboard/user/reports",
-          icon: FileChartColumn,
-        },
-        {
-          name: "Account Status",
-          href: "/account/dashboard/user/status",
-          icon: Clock,
-        },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        {
-          name: "Messages",
-          href: "/messages",
-          icon: Mail,
-        },
-        {
-          name: "Help & Support",
-          href: "/support",
-          icon: HelpCircle,
+          icon: FileText,
         },
       ],
     },
@@ -123,8 +102,13 @@ export const dashboardNavConfig: DashboardNavConfig = {
       title: "Account",
       links: [
         {
+          name: "Notifications",
+          href: "/account/dashboard/user/notifications",
+          icon: Bell,
+        },
+        {
           name: "Settings",
-          href: "/settings",
+          href: "/account/dashboard/user/settings",
           icon: Settings,
         },
       ],
@@ -133,62 +117,48 @@ export const dashboardNavConfig: DashboardNavConfig = {
 
   MODERATOR: [
     {
-      title: "Moderation",
+      title: "Overview",
       links: [
         {
           name: "Dashboard",
-          href: "/account/dashboard",
+          href: "/account/dashboard/moderator",
           icon: LayoutDashboard,
+          exact: true,
         },
+      ],
+    },
+    {
+      title: "Review Queue",
+      links: [
         {
-          name: "KYC Queue",
-          href: "/account/dashboard/moderator/kyc",
-          icon: BadgeCheck,
+          name: "KYC Reviews",
+          href: "/account/dashboard/moderator/kyc-reviews",
+          icon: SearchCheck,
         },
         {
           name: "Document Reviews",
-          href: "/account/dashboard/moderator/documents",
-          icon: FileText,
+          href: "/account/dashboard/moderator/document-reviews",
+          icon: FolderCheck,
         },
         {
-          name: "Incidents",
-          href: "/account/dashboard/moderator/incidents",
-          icon: ShieldAlert,
-        },
-        {
-          name: "Flags & Alerts",
-          href: "/account/dashboard/moderator/alerts",
-          icon: AlertTriangle,
+          name: "Testimonials",
+          href: "/account/dashboard/moderator/testimonies",
+          icon: ClipboardList,
         },
       ],
     },
     {
-      title: "Client Oversight",
+      title: "Monitoring",
       links: [
         {
-          name: "Investors",
-          href: "/account/dashboard/moderator/investors",
-          icon: Users,
+          name: "Audit Logs",
+          href: "/account/dashboard/moderator/audit-logs",
+          icon: ScrollText,
         },
         {
-          name: "Accounts",
-          href: "/account/dashboard/moderator/accounts",
-          icon: CreditCard,
-        },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        {
-          name: "Messages",
-          href: "/messages",
-          icon: Mail,
-        },
-        {
-          name: "Support Tickets",
-          href: "/support",
-          icon: HelpCircle,
+          name: "Activity Feed",
+          href: "/account/dashboard/moderator/activity",
+          icon: Activity,
         },
       ],
     },
@@ -196,13 +166,8 @@ export const dashboardNavConfig: DashboardNavConfig = {
       title: "Account",
       links: [
         {
-          name: "Profile",
-          href: "/profile",
-          icon: User,
-        },
-        {
           name: "Settings",
-          href: "/settings",
+          href: "/account/dashboard/moderator/settings",
           icon: Settings,
         },
       ],
@@ -211,112 +176,73 @@ export const dashboardNavConfig: DashboardNavConfig = {
 
   ADMIN: [
     {
-      title: "Platform Overview",
+      title: "Overview",
       links: [
         {
           name: "Dashboard",
-          href: "/account/dashboard",
+          href: "/account/dashboard/admin",
           icon: LayoutDashboard,
+          exact: true,
         },
         {
           name: "Analytics",
           href: "/account/dashboard/admin/analytics",
-          icon: BarChart2,
-        },
-        {
-          name: "Operations",
-          href: "/account/dashboard/admin/operations",
-          icon: Activity,
-        },
-        {
-          name: "Reports",
-          href: "/account/dashboard/admin/reports",
-          icon: FileChartColumn,
+          icon: BarChart3,
         },
       ],
     },
     {
-      title: "Client Management",
+      title: "Operations",
       links: [
         {
-          name: "Investors",
-          href: "/account/dashboard/admin/investors",
+          name: "Users",
+          href: "/account/dashboard/admin/users",
           icon: Users,
+        },
+        {
+          name: "Investor Profiles",
+          href: "/account/dashboard/admin/investors",
+          icon: Briefcase,
         },
         {
           name: "Investment Accounts",
           href: "/account/dashboard/admin/investment-accounts",
-          icon: Wallet,
+          icon: CircleDollarSign,
         },
         {
-          name: "KYC Reviews",
+          name: "KYC Management",
           href: "/account/dashboard/admin/kyc",
-          icon: BadgeCheck,
-        },
-        {
-          name: "Documents",
-          href: "/account/dashboard/admin/documents",
-          icon: FolderOpen,
+          icon: ShieldCheck,
         },
       ],
     },
     {
-      title: "Operations & Compliance",
+      title: "Content & Compliance",
       links: [
         {
-          name: "Transactions",
-          href: "/account/dashboard/admin/transactions",
-          icon: Receipt,
-        },
-        {
-          name: "Compliance",
-          href: "/account/dashboard/admin/compliance",
-          icon: ShieldCheck,
+          name: "Testimonials",
+          href: "/account/dashboard/admin/testimonies",
+          icon: FileText,
         },
         {
           name: "Audit Logs",
           href: "/account/dashboard/admin/audit-logs",
-          icon: Scale,
-        },
-        {
-          name: "Testimonials",
-          href: "/account/dashboard/admin/testimonies",
-          icon: Award,
+          icon: ScrollText,
         },
       ],
     },
     {
-      title: "Internal Management",
+      title: "System",
       links: [
         {
-          name: "Staff",
-          href: "/account/dashboard/admin/staff",
-          icon: Briefcase,
+          name: "Notifications",
+          href: "/account/dashboard/admin/notifications",
+          icon: Bell,
         },
         {
-          name: "File Assets",
-          href: "/account/dashboard/admin/files",
-          icon: HardDrive,
-        },
-        {
-          name: "Site Settings",
+          name: "Settings",
           href: "/account/dashboard/admin/settings",
           icon: Settings,
-        },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        {
-          name: "Messages",
-          href: "/messages",
-          icon: Mail,
-        },
-        {
-          name: "Support Desk",
-          href: "/account/dashboard/admin/support",
-          icon: HelpCircle,
         },
       ],
     },
@@ -328,23 +254,19 @@ export const dashboardNavConfig: DashboardNavConfig = {
       links: [
         {
           name: "Dashboard",
-          href: "/account/dashboard",
+          href: "/account/dashboard/super-admin",
           icon: LayoutDashboard,
+          exact: true,
         },
         {
-          name: "Executive Analytics",
+          name: "Platform Analytics",
           href: "/account/dashboard/super-admin/analytics",
-          icon: Landmark,
+          icon: BarChart3,
         },
         {
-          name: "Risk & Compliance",
-          href: "/account/dashboard/super-admin/compliance",
-          icon: ShieldCheck,
-        },
-        {
-          name: "Audit Center",
-          href: "/account/dashboard/super-admin/audit-logs",
-          icon: Scale,
+          name: "System Health",
+          href: "/account/dashboard/super-admin/system-health",
+          icon: Activity,
         },
       ],
     },
@@ -354,57 +276,48 @@ export const dashboardNavConfig: DashboardNavConfig = {
         {
           name: "Admins",
           href: "/account/dashboard/super-admin/admins",
-          icon: Users,
+          icon: UserCog,
         },
         {
           name: "Moderators",
           href: "/account/dashboard/super-admin/moderators",
-          icon: ShieldAlert,
+          icon: ShieldCheck,
         },
         {
-          name: "Staff",
-          href: "/account/dashboard/super-admin/staff",
-          icon: Briefcase,
-        },
-        {
-          name: "Investors",
-          href: "/account/dashboard/super-admin/investors",
-          icon: User,
+          name: "Users",
+          href: "/account/dashboard/super-admin/users",
+          icon: Users,
         },
       ],
     },
     {
-      title: "System",
+      title: "Platform Control",
       links: [
         {
-          name: "File Assets",
-          href: "/account/dashboard/super-admin/files",
-          icon: HardDrive,
+          name: "Investor Profiles",
+          href: "/account/dashboard/super-admin/investors",
+          icon: Briefcase,
         },
         {
-          name: "Testimonials",
-          href: "/account/dashboard/super-admin/testimonies",
-          icon: Award,
+          name: "Investment Accounts",
+          href: "/account/dashboard/super-admin/investment-accounts",
+          icon: Wallet,
+        },
+        {
+          name: "Audit Logs",
+          href: "/account/dashboard/super-admin/audit-logs",
+          icon: ScrollText,
         },
         {
           name: "Platform Settings",
           href: "/account/dashboard/super-admin/settings",
-          icon: Settings,
-        },
-        {
-          name: "Organization",
-          href: "/account/dashboard/super-admin/organization",
           icon: Building2,
         },
       ],
     },
   ],
-} as const;
+};
 
-export function getDashboardNavByRole(role: DashboardRole) {
-  return dashboardNavConfig[role] ?? dashboardNavConfig.USER;
-}
-
-export function getAllDashboardLinksByRole(role: DashboardRole) {
-  return getDashboardNavByRole(role).flatMap((section) => section.links);
+export function getDashboardMenu(role: DashboardRole) {
+  return DASHBOARD_MENU[role] ?? DASHBOARD_MENU.USER;
 }

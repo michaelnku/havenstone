@@ -20,7 +20,7 @@ export function OnboardingDialog({ userName }: OnboardingDialogProps) {
 
   const handleSkip = async () => {
     await skipOnboardingAction();
-    router.push("/account/dashboard");
+    router.push("/");
     router.refresh();
   };
 
