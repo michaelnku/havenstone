@@ -5,8 +5,8 @@ import { CheckCircle2, Landmark, ShieldCheck, Wallet } from "lucide-react";
 
 import {
   createInvestmentOrder,
-  initialCreateInvestmentOrderActionState,
 } from "@/actions/investment-order/createInvestmentOrder";
+import { initialCreateInvestmentOrderActionState } from "@/actions/investment-order/createInvestmentOrder.state";
 import type {
   InvestmentOrderCreationOptionsData,
   InvestmentOrderCreationPlanOption,
@@ -219,7 +219,7 @@ export function CreateInvestmentOrderWizard({
   ];
 
   return (
-    <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+    <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(19rem,0.85fr)]">
       <div className="space-y-6">
         {createdOrderId ? (
           <div className="rounded-[1.75rem] border border-emerald-400/20 bg-emerald-400/10 p-5">
@@ -239,8 +239,8 @@ export function CreateInvestmentOrderWizard({
           </div>
         ) : null}
 
-        <section className="card-premium rounded-[2rem] p-6 sm:p-8">
-          <div className="grid gap-3 md:grid-cols-5">
+        <section className="card-premium overflow-hidden rounded-[2rem] p-5 sm:p-6 lg:p-8">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
             {stepTitles.map((stepTitle, index) => {
               const isActive = index === effectiveStep;
               const isComplete = index < effectiveStep;
@@ -267,7 +267,7 @@ export function CreateInvestmentOrderWizard({
           </div>
         </section>
 
-        <section className="card-premium rounded-[2rem] p-6 sm:p-8">
+        <section className="card-premium overflow-hidden rounded-[2rem] p-5 sm:p-6 lg:p-8">
           {effectiveStep === 0 ? (
             <InvestmentTypeStep
               options={typeOptions}

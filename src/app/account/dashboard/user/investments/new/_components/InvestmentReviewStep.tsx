@@ -1,8 +1,8 @@
 import { useFormStatus } from "react-dom";
 import { ArrowLeft, BadgeCheck, Loader2, ShieldCheck } from "lucide-react";
 
-import type { CreateInvestmentOrderActionState } from "@/actions/investment-order/createInvestmentOrder";
 import type { InvestmentOrderCreationPlanOption } from "@/actions/investment-order/getInvestmentOrderCreationOptions";
+import type { CreateInvestmentOrderActionState } from "@/actions/investment-order/createInvestmentOrder.state";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/formatters";
 

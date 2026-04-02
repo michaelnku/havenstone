@@ -9,8 +9,8 @@ export default function Loading() {
         <Skeleton className="h-5 w-full max-w-2xl rounded-full bg-white/10" />
       </div>
 
-      <section className="card-premium rounded-[2rem] p-6 sm:p-8">
-        <div className="grid gap-3 md:grid-cols-5">
+      <section className="card-premium overflow-hidden rounded-[2rem] p-5 sm:p-6 lg:p-8">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           {Array.from({ length: 5 }).map((_, index) => (
             <div
               key={index}
@@ -23,9 +23,9 @@ export default function Loading() {
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="card-premium rounded-[2rem] p-6 sm:p-8">
-          <Skeleton className="h-8 w-56 rounded-full bg-white/10" />
+      <section className="grid gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(19rem,0.85fr)]">
+        <div className="card-premium overflow-hidden rounded-[2rem] p-5 sm:p-6 lg:p-8">
+          <Skeleton className="h-8 w-full max-w-56 rounded-full bg-white/10" />
           <Skeleton className="mt-3 h-5 w-full max-w-2xl rounded-full bg-white/10" />
 
           <div className="mt-6 grid gap-4 lg:grid-cols-2">
@@ -44,8 +44,8 @@ export default function Loading() {
         </div>
 
         <div className="space-y-6">
-          <section className="glass-strong rounded-[2rem] p-6">
-            <Skeleton className="h-6 w-44 rounded-full bg-white/10" />
+          <section className="glass-strong overflow-hidden rounded-[2rem] p-5 sm:p-6">
+            <Skeleton className="h-6 w-full max-w-44 rounded-full bg-white/10" />
             <Skeleton className="mt-3 h-4 w-full rounded-full bg-white/10" />
             <Skeleton className="mt-2 h-4 w-4/5 rounded-full bg-white/10" />
 
@@ -62,8 +62,8 @@ export default function Loading() {
             </div>
           </section>
 
-          <section className="card-premium rounded-[2rem] p-6">
-            <Skeleton className="h-6 w-40 rounded-full bg-white/10" />
+          <section className="card-premium overflow-hidden rounded-[2rem] p-5 sm:p-6">
+            <Skeleton className="h-6 w-full max-w-40 rounded-full bg-white/10" />
             <Skeleton className="mt-3 h-4 w-full rounded-full bg-white/10" />
             <Skeleton className="mt-2 h-4 w-3/4 rounded-full bg-white/10" />
             <Skeleton className="mt-6 h-12 w-full rounded-2xl bg-white/10" />

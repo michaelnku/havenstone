@@ -14,23 +14,10 @@ import {
   createInvestmentOrderSchema,
   parseInvestmentOrderAmount,
 } from "@/lib/zod/investment-order";
-
-type OrderFieldName =
-  | "investmentType"
-  | "planCategory"
-  | "investmentPlanId"
-  | "amount";
-
-export type CreateInvestmentOrderActionState = {
-  status: "idle" | "error";
-  message?: string;
-  fieldErrors?: Partial<Record<OrderFieldName, string>>;
-};
-
-export const initialCreateInvestmentOrderActionState: CreateInvestmentOrderActionState =
-  {
-    status: "idle",
-  };
+import type {
+  CreateInvestmentOrderActionState,
+  OrderFieldName,
+} from "./createInvestmentOrder.state";
 
 function getFormValue(formData: FormData, key: OrderFieldName) {
   const value = formData.get(key);
@@ -208,5 +195,5 @@ export async function createInvestmentOrder(
     },
   });
 
-  redirect(`/account/dashboard/user/investments/new?created=${order.id}`);
+  redirect(`/account/dashboard/user/investments?created=${order.id}`);
 }
