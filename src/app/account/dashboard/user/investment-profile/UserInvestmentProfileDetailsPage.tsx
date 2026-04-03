@@ -135,7 +135,7 @@ export function UserInvestmentProfileDetailsPage({
           className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
         >
           <PencilLine className="h-4 w-4" />
-          Edit
+          Update
         </Link>
       </div>
 

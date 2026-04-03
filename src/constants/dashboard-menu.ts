@@ -21,6 +21,9 @@ import {
   BarChart3,
   CircleDollarSign,
   UserCog,
+  Layers,
+  TrendingUp,
+  Banknote,
 } from "lucide-react";
 
 export type DashboardRole = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
@@ -121,18 +124,18 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "KYC Reviews",
-          href: "/account/dashboard/moderator/kyc-reviews",
+          href: "/account/dashboard/moderator/kyc-documents",
           icon: SearchCheck,
         },
         {
-          name: "Document Reviews",
-          href: "/account/dashboard/moderator/document-reviews",
-          icon: FolderCheck,
+          name: "Investment Orders",
+          href: "/account/dashboard/moderator/investment-orders",
+          icon: ClipboardList,
         },
         {
           name: "Testimonials",
           href: "/account/dashboard/moderator/testimonies",
-          icon: ClipboardList,
+          icon: FileText,
         },
       ],
     },
@@ -198,9 +201,44 @@ export const DASHBOARD_MENU = {
           icon: CircleDollarSign,
         },
         {
+          name: "Investment Orders",
+          href: "/account/dashboard/admin/investment-orders",
+          icon: ClipboardList,
+        },
+        {
           name: "KYC Management",
-          href: "/account/dashboard/admin/kyc",
+          href: "/account/dashboard/admin/kyc-documents",
           icon: ShieldCheck,
+        },
+      ],
+    },
+    {
+      title: "Financial",
+      links: [
+        {
+          name: "Funding Intents",
+          href: "/account/dashboard/admin/funding-intents",
+          icon: Wallet,
+        },
+        {
+          name: "Platform Wallets",
+          href: "/account/dashboard/admin/platform-wallets",
+          icon: Landmark,
+        },
+      ],
+    },
+    {
+      title: "Investment Catalog",
+      links: [
+        {
+          name: "Investments",
+          href: "/account/dashboard/admin/investments",
+          icon: TrendingUp,
+        },
+        {
+          name: "Investment Plans",
+          href: "/account/dashboard/admin/investment-plans",
+          icon: Layers,
         },
       ],
     },
@@ -291,10 +329,55 @@ export const DASHBOARD_MENU = {
           icon: Wallet,
         },
         {
+          name: "Investment Orders",
+          href: "/account/dashboard/super-admin/investment-orders",
+          icon: ClipboardList,
+        },
+        {
+          name: "Funding Intents",
+          href: "/account/dashboard/super-admin/funding-intents",
+          icon: Landmark,
+        },
+        {
+          name: "Platform Wallets",
+          href: "/account/dashboard/super-admin/platform-wallets",
+          icon: Banknote,
+        },
+      ],
+    },
+    {
+      title: "Investment Catalog",
+      links: [
+        {
+          name: "Investments",
+          href: "/account/dashboard/super-admin/investments",
+          icon: TrendingUp,
+        },
+        {
+          name: "Investment Plans",
+          href: "/account/dashboard/super-admin/investment-plans",
+          icon: Layers,
+        },
+      ],
+    },
+    {
+      title: "Compliance & Logs",
+      links: [
+        {
           name: "Audit Logs",
           href: "/account/dashboard/super-admin/audit-logs",
           icon: ScrollText,
         },
+        {
+          name: "KYC Documents",
+          href: "/account/dashboard/super-admin/kyc-documents",
+          icon: ShieldCheck,
+        },
+      ],
+    },
+    {
+      title: "System",
+      links: [
         {
           name: "Platform Settings",
           href: "/account/dashboard/super-admin/settings",
