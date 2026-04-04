@@ -4,7 +4,7 @@ import { InvestmentPlanForm } from "../_components/InvestmentPlanForm";
 
 export default async function NewInvestmentPlanPage() {
   const data = await getSuperAdminInvestmentPlans();
-  const defaultLevels = ["STARTER", "GROWTH", "PREMIUM"] as const;
+  const defaultLevels = ["CORE", "ADVANCED", "ELITE"] as const;
 
   return (
     <InvestmentPlanForm
