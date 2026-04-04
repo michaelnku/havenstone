@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { InvestmentTierLevel } from "@/generated/prisma";
 
 import { prisma } from "@/lib/prisma";
 import { requireSuperAdminAccess } from "@/lib/permissions/requireSuperAdminAccess";
@@ -32,7 +33,7 @@ export type SuperAdminInvestmentPlanDetails = {
   tierRangeLabel: string | null;
   tiers: Array<{
     id: string;
-    level: string;
+    level: InvestmentTierLevel;
     levelLabel: string;
     minAmount: number;
     maxAmount: number;
@@ -51,7 +52,7 @@ export type SuperAdminInvestmentPlanDetails = {
     currency: string;
     isActive: boolean;
     tiers: Array<{
-      level: string;
+      level: InvestmentTierLevel;
       minAmount: string;
       maxAmount: string;
       roiPercent: string;
@@ -160,7 +161,7 @@ export async function getSuperAdminInvestmentPlanById(
       period: plan.period,
       currency: plan.currency,
       isActive: plan.isActive,
-      tiers: ["STARTER", "GROWTH", "PREMIUM"].map((level) => {
+      tiers: (["STARTER", "GROWTH", "PREMIUM"] as const).map((level) => {
         const tier = plan.tiers.find((item) => item.level === level);
 
         return {
