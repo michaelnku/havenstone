@@ -6,14 +6,12 @@ import { firstNonEmpty } from "./resolveSeoFallbacks";
 
 const DEFAULT_SITE_NAME = "Havenstone";
 const DEFAULT_SITE_DESCRIPTION =
-  "Havenstone is a secure modern wealth platform designed for long-term investing, retirement security, and lasting financial confidence.";
+  "A wealth platform designed to help you invest for the long term and achieve financial security.";
 const DEFAULT_SITE_TAGLINE =
-  "Secure wealth growth and retirement confidence.";
+  "Invest for the long term, achieve financial security.";
 const DEFAULT_KEYWORDS = [
-  "Havenstone",
   "wealth platform",
   "investment platform",
-  "retirement planning",
   "long-term investing",
   "financial security",
   "wealth management",
@@ -52,13 +50,11 @@ export const getSiteSeoConfig = cache(async (): Promise<SiteSeoConfig> => {
   );
 
   const keywords =
-    config?.keywords
-      ?.map((keyword) => keyword.trim())
-      .filter(Boolean) ?? [];
+    config?.keywords?.map((keyword) => keyword.trim()).filter(Boolean) ?? [];
 
   return {
-    siteName: firstNonEmpty(config?.siteName, DEFAULT_SITE_NAME) ??
-      DEFAULT_SITE_NAME,
+    siteName:
+      firstNonEmpty(config?.siteName, DEFAULT_SITE_NAME) ?? DEFAULT_SITE_NAME,
     siteUrl,
     siteDescription:
       firstNonEmpty(config?.siteDescription, DEFAULT_SITE_DESCRIPTION) ??

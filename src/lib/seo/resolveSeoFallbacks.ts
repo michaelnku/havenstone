@@ -18,7 +18,6 @@ type InvestmentPlanSeoInput = {
   seoImageUrl?: string | null;
   currency?: string | null;
   period?: string | null;
-  riskLevel?: string | null;
 };
 
 export function firstNonEmpty(...values: Array<string | null | undefined>) {
@@ -92,7 +91,8 @@ export function resolveGenericPageSeo(
   return {
     title,
     description,
-    imageUrl: firstNonEmpty(input.imageUrl, site.defaultOgImageUrl) ??
+    imageUrl:
+      firstNonEmpty(input.imageUrl, site.defaultOgImageUrl) ??
       site.defaultOgImageUrl,
     keywords: normalizeKeywords([...(input.keywords ?? []), ...site.keywords]),
   };
@@ -105,9 +105,6 @@ export function resolveInvestmentPlanSeo(
   const periodLabel = firstNonEmpty(plan.period)
     ? formatEnumLabel(plan.period as string)
     : undefined;
-  const riskLevelLabel = firstNonEmpty(plan.riskLevel)
-    ? formatEnumLabel(plan.riskLevel as string)
-    : undefined;
 
   const generatedTitle = `${plan.name} Investment Plan`;
 
@@ -116,9 +113,6 @@ export function resolveInvestmentPlanSeo(
     [
       `Explore the ${plan.name} investment plan on ${site.siteName}`,
       periodLabel ? `built for a ${periodLabel.toLowerCase()} horizon` : null,
-      riskLevelLabel
-        ? `and a ${riskLevelLabel.toLowerCase()} risk profile`
-        : null,
       plan.currency ? `in ${plan.currency} denomination.` : ".",
     ]
       .filter(Boolean)
@@ -131,6 +125,6 @@ export function resolveInvestmentPlanSeo(
     title: firstNonEmpty(plan.seoTitle, generatedTitle),
     description: firstNonEmpty(plan.seoDescription, generatedDescription),
     imageUrl: plan.seoImageUrl,
-    keywords: [plan.name, periodLabel, riskLevelLabel],
+    keywords: [plan.name, periodLabel],
   });
 }

@@ -9,19 +9,22 @@ export type CurrentSessionUser = {
   image: string | null;
 };
 
-export const getCurrentSessionUser = async (): Promise<CurrentSessionUser | null> => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export const getCurrentSessionUser =
+  async (): Promise<CurrentSessionUser | null> => {
+    try {
+      const session = await auth.api.getSession({
+        headers: await headers(),
+      });
 
-  if (!session?.user?.id) {
-    return null;
-  }
+      if (!session?.user?.id) return null;
 
-  return {
-    id: session.user.id,
-    email: session.user.email ?? null,
-    name: session.user.name ?? null,
-    image: session.user.image ?? null,
+      return {
+        id: session.user.id,
+        email: session.user.email ?? null,
+        name: session.user.name ?? null,
+        image: session.user.image ?? null,
+      };
+    } catch {
+      return null;
+    }
   };
-};

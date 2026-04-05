@@ -27,7 +27,13 @@ export default async function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
+  let user = null;
+  try {
+    user = await getCurrentUser();
+  } catch (error) {
+    console.error("Error fetching current user:", error);
+    user = null;
+  }
 
   if (!user) {
     redirect("/auth/login");

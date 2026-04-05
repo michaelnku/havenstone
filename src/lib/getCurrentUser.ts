@@ -1,8 +1,9 @@
 import { prisma } from "./prisma";
 import { getCurrentSessionUser } from "./getCurrentSessionUser";
 import { normalizeUser } from "./normalizeUser";
+import { cache } from "react";
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = cache(async () => {
   const sessionUser = await getCurrentSessionUser();
 
   if (!sessionUser?.id) return null;
@@ -32,7 +33,7 @@ export const getCurrentUser = async () => {
     emailVerified: user.emailVerified,
     profileAvatarFileAsset: user.profileAvatarFileAsset,
   });
-};
+});
 
 export const getCurrentUserId = async () => {
   const sessionUser = await getCurrentSessionUser();

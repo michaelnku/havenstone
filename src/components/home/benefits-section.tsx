@@ -1,4 +1,11 @@
-import { BriefcaseBusiness, Clock3, Eye, Shield, TrendingUp, Users } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Clock3,
+  Eye,
+  Shield,
+  TrendingUp,
+  Users,
+} from "lucide-react";
 
 import { SectionHeading } from "@/components/home/section-heading";
 import { SectionShell } from "@/components/home/section-shell";
@@ -6,47 +13,49 @@ import { SectionShell } from "@/components/home/section-shell";
 const benefitGroups = [
   {
     title: "For organizations",
+    highlight: "Structured, institutional-grade control",
     items: [
       {
         icon: BriefcaseBusiness,
         title: "Institutional polish",
         description:
-          "Offer retirement support through a platform that reflects professionalism and long-term stewardship.",
+          "Deliver retirement programs through a platform that reflects professionalism and long-term stewardship.",
       },
       {
         icon: Users,
         title: "Member confidence",
         description:
-          "Give employees a clearer, calmer way to understand participation and account value.",
+          "Provide employees with a clearer, more stable view of participation and account value.",
       },
       {
         icon: Eye,
         title: "Operational visibility",
         description:
-          "Reduce ambiguity with transparent records and a more consistent account experience.",
+          "Maintain consistent oversight with transparent records and structured reporting.",
       },
     ],
   },
   {
     title: "For members",
+    highlight: "A calm, user-first financial experience",
     items: [
       {
         icon: TrendingUp,
         title: "Long-term perspective",
         description:
-          "See progress in a format designed to support thoughtful financial planning rather than short-term distraction.",
+          "Follow account growth in a way that supports thoughtful financial planning.",
       },
       {
         icon: Shield,
         title: "Trustworthy access",
         description:
-          "Interact with retirement information through secure, premium surfaces built for confidence.",
+          "Interact with your investment information through secure, reliable interfaces.",
       },
       {
         icon: Clock3,
         title: "Less friction",
         description:
-          "Find the information that matters quickly, with less complexity between the user and the account.",
+          "Access what matters quickly without unnecessary complexity or confusion.",
       },
     ],
   },
@@ -57,48 +66,95 @@ export function BenefitsSection() {
     <SectionShell id="benefits" className="py-20 sm:py-24">
       <SectionHeading
         eyebrow="Benefits"
-        title="Meaningful value for both program sponsors and account holders."
-        description="Havenstone is built to support the institutional side of retirement planning while still delivering a premium experience for the people relying on it."
+        title="Designed for both institutional control and individual confidence"
+        description="Havenstone supports organizations with structured oversight while delivering a calm, transparent experience for the people relying on it."
       />
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-2">
-        {benefitGroups.map((group) => (
-          <section
-            key={group.title}
-            className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(11,18,41,0.98))] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-7"
-          >
-            <h3 className="text-xl font-semibold tracking-[-0.02em] text-white">
-              {group.title}
-            </h3>
+      <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        {benefitGroups.map((group, index) => {
+          const isOrg = index === 0;
 
-            <div className="mt-6 grid gap-4">
-              {group.items.map((item) => {
-                const Icon = item.icon;
+          return (
+            <section
+              key={group.title}
+              className={`relative overflow-hidden rounded-[2.2rem] border p-7 shadow-[0_24px_60px_rgba(0,0,0,0.25)] ${
+                isOrg
+                  ? "border-white/10 bg-[linear-gradient(135deg,rgba(37,99,235,0.18),rgba(15,23,42,0.96))]"
+                  : "border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.9),rgba(8,17,37,0.98))]"
+              }`}
+            >
+              {/* subtle glow */}
+              {isOrg && (
+                <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 bg-blue-500/10 blur-3xl" />
+              )}
 
-                return (
-                  <article
-                    key={item.title}
-                    className="rounded-[1.5rem] border border-white/8 bg-white/[0.04] p-5"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.06))]">
-                        <Icon className="h-5 w-5 text-blue-200" />
-                      </div>
-                      <div>
-                        <h4 className="text-base font-semibold text-white">
-                          {item.title}
-                        </h4>
-                        <p className="mt-2 text-sm leading-7 text-slate-400">
-                          {item.description}
-                        </p>
+              {/* HEADER */}
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-blue-200">
+                  {group.title}
+                </p>
+
+                <h3 className="mt-3 text-xl font-semibold text-white">
+                  {group.highlight}
+                </h3>
+              </div>
+
+              {/* PRIMARY ITEM */}
+              {group.items[0] &&
+                (() => {
+                  const Icon = group.items[0].icon;
+
+                  return (
+                    <div className="mt-7 rounded-[1.7rem] border border-white/10 bg-white/[0.05] p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+                          <Icon className="h-5 w-5 text-blue-200" />
+                        </div>
+
+                        <div>
+                          <h4 className="text-base font-semibold text-white">
+                            {group.items[0].title}
+                          </h4>
+                          <p className="mt-2 text-sm leading-7 text-slate-300">
+                            {group.items[0].description}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+                  );
+                })()}
+
+              {/* SECONDARY ITEMS */}
+              <div className="mt-6 grid gap-4">
+                {group.items.slice(1).map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.title}
+                      className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-5"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.2),rgba(59,130,246,0.05))]">
+                          <Icon className="h-4 w-4 text-blue-200" />
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm font-semibold text-white">
+                            {item.title}
+                          </h4>
+                          <p className="mt-1 text-sm text-slate-400">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
       </div>
     </SectionShell>
   );

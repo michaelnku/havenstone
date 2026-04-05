@@ -1,3 +1,5 @@
+"use client";
+
 import { Quote } from "lucide-react";
 
 import { SectionHeading } from "@/components/home/section-heading";
@@ -32,38 +34,53 @@ export function TestimonialsSection() {
     <SectionShell id="testimonials" className="py-20 sm:py-24">
       <SectionHeading
         eyebrow="Testimonials"
-        title="Trusted by teams that value clarity, confidence, and long-term credibility."
-        description="Organizations choose Havenstone when the retirement experience needs to feel premium, stable, and worthy of the responsibility it carries."
+        title="Trusted by organizations that value clarity and long-term credibility"
+        description="Havenstone is chosen by teams that require a structured, reliable, and professional financial experience."
         align="center"
       />
 
-      <div className="mt-10 grid gap-5 lg:grid-cols-3">
-        {testimonials.map((testimonial) => (
-          <figure
-            key={testimonial.name}
-            className="card-premium rounded-[1.9rem] p-6"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.06))]">
-              <Quote className="h-5 w-5 text-blue-200" />
+      {/* CAROUSEL */}
+      <div className="relative mt-12">
+        {/* edge fades */}
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-[#050b1f] to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-[#050b1f] to-transparent" />
+
+        <div className="flex gap-6 overflow-x-auto px-2 pb-6 snap-x snap-mandatory scrollbar-hide">
+          {testimonials.map((testimonial) => (
+            <div
+              key={testimonial.name}
+              className="group min-w-[320px] max-w-[380px] flex-shrink-0 snap-center"
+            >
+              <figure className="relative h-full rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(8,17,37,0.98))] p-7 shadow-[0_24px_60px_rgba(0,0,0,0.28)] transition duration-300 group-hover:-translate-y-1 group-hover:border-white/12">
+                {/* glow */}
+                <div className="absolute inset-0 rounded-[2rem] bg-blue-500/10 opacity-0 blur-xl transition group-hover:opacity-100" />
+
+                {/* icon */}
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.06))]">
+                  <Quote className="h-5 w-5 text-blue-200" />
+                </div>
+
+                {/* quote */}
+                <blockquote className="mt-6 text-base leading-8 text-slate-200">
+                  “{testimonial.quote}”
+                </blockquote>
+
+                {/* footer */}
+                <figcaption className="mt-8 border-t border-white/8 pt-5">
+                  <p className="text-sm font-semibold text-white">
+                    {testimonial.name}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-400">
+                    {testimonial.role}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {testimonial.organization}
+                  </p>
+                </figcaption>
+              </figure>
             </div>
-
-            <blockquote className="mt-6 text-base leading-8 text-slate-200">
-              “{testimonial.quote}”
-            </blockquote>
-
-            <figcaption className="mt-8 border-t border-white/8 pt-5">
-              <p className="text-sm font-semibold text-white">
-                {testimonial.name}
-              </p>
-              <p className="mt-1 text-sm text-slate-400">
-                {testimonial.role}
-              </p>
-              <p className="mt-1 text-sm text-slate-500">
-                {testimonial.organization}
-              </p>
-            </figcaption>
-          </figure>
-        ))}
+          ))}
+        </div>
       </div>
     </SectionShell>
   );
