@@ -107,7 +107,7 @@ export function BenefitsSection() {
                   return (
                     <div className="mt-7 rounded-[1.7rem] border border-white/10 bg-white/[0.05] p-6">
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+                        <div className="flex h-12 w-12 px-3 py-3 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
                           <Icon className="h-5 w-5 text-blue-200" />
                         </div>
 
@@ -135,7 +135,7 @@ export function BenefitsSection() {
                       className="rounded-[1.6rem] border border-white/8 bg-white/[0.04] p-5"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.2),rgba(59,130,246,0.05))]">
+                        <div className="flex h-10 w-10 px-3 py-3 items-center justify-center rounded-xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.2),rgba(59,130,246,0.05))]">
                           <Icon className="h-4 w-4 text-blue-200" />
                         </div>
 

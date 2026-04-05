@@ -31,17 +31,17 @@ export function HeroSection() {
 
       <div className="relative mx-auto grid max-w-7xl gap-14 px-4 pb-20 pt-16 sm:px-6 md:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:px-8 lg:pb-28 lg:pt-24">
         {/* LEFT */}
-        <div className="max-w-2xl">
+        <div className="max-w-2xl space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium tracking-[0.12em] text-blue-100 uppercase">
             Financial Growth Platform
           </div>
 
-          <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-white lg:text-4xl">
             Structured investment plans designed for long-term financial
             confidence
           </h1>
 
-          <p className="mt-6 text-base leading-8 text-slate-300 sm:text-lg">
+          <p className=" text-base leading-8 text-slate-300 sm:text-lg">
             Havenstone provides a clear, structured environment for managing
             investment plans, tracking contributions, and maintaining full
             visibility into account growth — all within a calm, secure, and
@@ -49,7 +49,7 @@ export function HeroSection() {
           </p>
 
           {/* CTA */}
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className=" flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="/auth/get-started"
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#2563eb,#3b82f6,#60a5fa)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_40px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5"
@@ -77,7 +77,7 @@ export function HeroSection() {
                   className="rounded-3xl border border-white/8 bg-white/[0.04] p-5 backdrop-blur-sm"
                 >
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.08))]">
-                    <Icon className="h-5 w-5 text-blue-300" />
+                    <Icon className="h-5 w-5 text-blue-300 shrink-0" />
                   </div>
 
                   <h3 className="mt-4 text-sm font-semibold text-white">
@@ -102,44 +102,65 @@ export function HeroSection() {
             <div className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3">
               <div>
                 <p className="text-xs uppercase text-slate-400">
-                  Investment Account
+                  Platform Snapshot
                 </p>
-                <p className="text-sm text-slate-200">Growth overview</p>
+                <p className="text-sm text-slate-200">Live activity overview</p>
               </div>
 
-              <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">
-                Stable
+              <span className="rounded-full bg-blue-400/10 px-3 py-1 text-xs text-blue-300">
+                Active
               </span>
             </div>
 
-            {/* MAIN VALUE */}
+            {/* TOTAL VALUE */}
             <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.04] p-6">
-              <p className="text-sm text-slate-400">Account value</p>
+              <p className="text-sm text-slate-400">Total Value</p>
 
-              <p className="mt-3 text-4xl font-semibold text-white">$18.4M</p>
+              <p className="mt-3 text-4xl font-semibold text-white">$42.8M</p>
 
-              <div className="mt-4 h-2.5 rounded-full bg-white/6">
-                <div className="h-2.5 w-[74%] rounded-full bg-gradient-to-r from-blue-500 to-blue-400" />
-              </div>
+              <p className="mt-2 text-xs text-slate-500">
+                Across all active investment accounts
+              </p>
             </div>
 
-            {/* CONTRIBUTIONS */}
+            {/* INSIGHTS */}
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
-                <p className="text-sm text-slate-400">Employer</p>
-                <p className="mt-2 text-xl text-white">$420,000</p>
+                <p className="text-xs text-slate-400">Top product</p>
+                <p className="mt-2 text-sm font-semibold text-white">
+                  Real Estate
+                </p>
               </div>
 
               <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
-                <p className="text-sm text-slate-400">Employee</p>
-                <p className="mt-2 text-xl text-white">$280,000</p>
+                <p className="text-xs text-slate-400">Most selected plan</p>
+                <p className="mt-2 text-sm font-semibold text-white">
+                  Core Growth Plan
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+                <p className="text-xs text-slate-400">Popular duration</p>
+                <p className="mt-2 text-sm font-semibold text-white">
+                  Medium term
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+                <p className="text-xs text-slate-400">Active accounts</p>
+                <p className="mt-2 text-sm font-semibold text-white">18,240+</p>
               </div>
             </div>
 
             {/* FOOT */}
             <div className="mt-5 rounded-3xl border border-white/8 bg-white/[0.03] p-5">
               <p className="text-sm text-white">
-                Structured plans. Clear contributions. Predictable growth.
+                Structured plans. Clear tracking. Estimated growth.
+              </p>
+
+              <p className="mt-2 text-xs text-slate-500">
+                Returns are estimates based on plan parameters and historical
+                performance.
               </p>
             </div>
           </div>

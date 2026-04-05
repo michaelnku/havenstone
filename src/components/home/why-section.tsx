@@ -30,7 +30,7 @@ const pillars = [
   },
 ];
 
-export function WhyHavenstoneSection() {
+export function WhySection() {
   return (
     <SectionShell id="why-havenstone" className="py-20 sm:py-24">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
@@ -45,9 +45,9 @@ export function WhyHavenstoneSection() {
         <div className="grid gap-5">
           {/* PRIMARY CARD */}
           <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(37,99,235,0.18),rgba(15,23,42,0.96))] p-7 shadow-[0_28px_70px_rgba(0,0,0,0.3)]">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
-                <ShieldCheck className="h-5 w-5 text-blue-200" />
+            <div className="flex justify-between gap-4">
+              <div className="flex h-11 w-11 px-3 py-3 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
+                <ShieldCheck className="h-5 w-5 text-blue-200 shrink-0" />
               </div>
 
               <div>
@@ -91,8 +91,8 @@ export function WhyHavenstoneSection() {
           {/* TERTIARY */}
           <div className="rounded-[1.7rem] border border-white/8 bg-white/[0.03] p-6">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.06))]">
-                <Sparkles className="h-5 w-5 text-blue-200" />
+              <div className="flex h-11 w-11 px-3 py-3 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.22),rgba(59,130,246,0.06))]">
+                <Sparkles className="h-5 w-5 text-blue-200 shrink-0" />
               </div>
 
               <div>

@@ -226,7 +226,7 @@ model Investment {
 
   type   InvestmentType          @default(CRYPTO)
   status InvestmentCatalogStatus @default(ACTIVE)
-  period InvestmentPeriod?       @default(LONG_TERM) //remove this later, its not useful anymore
+  period InvestmentPeriod        @default(LONG_TERM) //remove this later, its not useful anymore
 
   iconFileAssetId String?
   iconFileAsset   FileAsset? @relation("InvestmentIconAsset", fields: [iconFileAssetId], references: [id], onDelete: SetNull)
