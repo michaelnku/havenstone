@@ -1,3 +1,4 @@
+import { ComplianceStrip } from "@/components/layout/ComplianceStrip";
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 
@@ -14,6 +15,7 @@ export default function SiteLayout({
           {children}
         </div>
       </main>
+      <ComplianceStrip />
       <Footer />
     </div>
   );

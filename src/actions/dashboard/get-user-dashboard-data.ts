@@ -3,7 +3,7 @@
 import { AccountStatus } from "@/generated/prisma";
 import { getCurrentSessionUser } from "@/lib/getCurrentSessionUser";
 import { prisma } from "@/lib/prisma";
-import type { UserDashboardStats } from "@/app/account/dashboard/user/UserDashboardPage";
+import type { UserDashboardStats } from "@/app/account/dashboard/user/_components/UserDashboardPage";
 
 type UserDashboardData = {
   userName: string;

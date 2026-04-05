@@ -37,8 +37,8 @@ export function WhySection() {
         {/* LEFT */}
         <SectionHeading
           eyebrow="Why Havenstone"
-          title="A structured approach to long-term financial growth"
-          description="Havenstone is designed to bring clarity to investment plans, contributions, and account growth — delivering a calm, secure, and dependable financial experience."
+          title="Designed for a new era of investing"
+          description="Havenstone is built around the idea that investing should be both trustworthy and clear, with a calm, structured experience that supports long-term financial confidence."
         />
 
         {/* RIGHT - LAYERED */}

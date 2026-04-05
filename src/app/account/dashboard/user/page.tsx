@@ -1,5 +1,5 @@
 import { getUserDashboardDataAction } from "@/actions/dashboard/get-user-dashboard-data";
-import UserDashboardPage from "./UserDashboardPage";
+import UserDashboardPage from "./_components/UserDashboardPage";
 
 export default async function Page() {
   const { userName, stats } = await getUserDashboardDataAction();

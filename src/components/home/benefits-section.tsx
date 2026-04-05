@@ -12,62 +12,61 @@ import { SectionShell } from "@/components/home/section-shell";
 
 const benefitGroups = [
   {
-    title: "For organizations",
-    highlight: "Structured, institutional-grade control",
+    title: "For individuals",
+    highlight: "Simple and flexible investing",
     items: [
       {
-        icon: BriefcaseBusiness,
-        title: "Institutional polish",
+        icon: TrendingUp,
+        title: "Flexible participation",
         description:
-          "Deliver retirement programs through a platform that reflects professionalism and long-term stewardship.",
+          "Choose from multiple investment and savings plans based on your preferred timeline and structure.",
       },
       {
-        icon: Users,
-        title: "Member confidence",
+        icon: Shield,
+        title: "Clear account visibility",
         description:
-          "Provide employees with a clearer, more stable view of participation and account value.",
+          "Track your funds, selected plans, and estimated growth in one organized view.",
       },
       {
-        icon: Eye,
-        title: "Operational visibility",
+        icon: Clock3,
+        title: "Structured experience",
         description:
-          "Maintain consistent oversight with transparent records and structured reporting.",
+          "Follow a simple process from funding to tracking without unnecessary complexity.",
       },
     ],
   },
   {
-    title: "For members",
-    highlight: "A calm, user-first financial experience",
+    title: "For organizations",
+    highlight: "Structured financial participation",
     items: [
       {
-        icon: TrendingUp,
-        title: "Long-term perspective",
+        icon: BriefcaseBusiness,
+        title: "Organized contribution structure",
         description:
-          "Follow account growth in a way that supports thoughtful financial planning.",
+          "Provide a clear framework for group participation in savings and investment plans.",
       },
       {
-        icon: Shield,
-        title: "Trustworthy access",
+        icon: Users,
+        title: "Unified visibility",
         description:
-          "Interact with your investment information through secure, reliable interfaces.",
+          "Maintain oversight of accounts and participation across multiple users.",
       },
       {
-        icon: Clock3,
-        title: "Less friction",
+        icon: Eye,
+        title: "Consistent tracking",
         description:
-          "Access what matters quickly without unnecessary complexity or confusion.",
+          "Monitor activity, contributions, and plan engagement with structured reporting.",
       },
     ],
   },
 ];
-
 export function BenefitsSection() {
   return (
     <SectionShell id="benefits" className="py-20 sm:py-24">
       <SectionHeading
         eyebrow="Benefits"
-        title="Designed for both institutional control and individual confidence"
-        description="Havenstone supports organizations with structured oversight while delivering a calm, transparent experience for the people relying on it."
+        title="Designed for individuals and organizations"
+        description="Havenstone provides a structured and flexible way to save and invest, with clear visibility across all plans and accounts."
       />
 
       <div className="mt-12 grid gap-8 lg:grid-cols-2">

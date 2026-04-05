@@ -7,23 +7,23 @@ const faqs = [
   {
     question: "Who is Havenstone built for?",
     answer:
-      "Havenstone is designed for retirement and investment programs that require a structured, premium experience with clear contribution tracking and account visibility.",
+      "Havenstone is built for individuals and organizations looking to save and invest through structured plans with clear account visibility.",
     featured: true,
   },
   {
-    question: "What makes the experience feel trustworthy?",
+    question: "What returns can I expect?",
     answer:
-      "The platform emphasizes structured investment plans, transparent contribution records, and secure access patterns that support long-term financial confidence.",
+      "Each plan provides estimated return ranges based on its structure and duration. Returns are not guaranteed and may vary.",
   },
   {
-    question: "Can organizations use Havenstone for workforce programs?",
+    question: "Is Havenstone only for retirement?",
     answer:
-      "Yes. Havenstone is built to support employer-backed retirement and investment programs with institutional-grade clarity and oversight.",
+      "No. Havenstone supports general savings and investment goals. A personal retirement plan is available as one of the options.",
   },
   {
-    question: "What can members see inside the platform?",
+    question: "What can I track on the platform?",
     answer:
-      "Members can view contributions, account growth, plan participation, and long-term progress in a clear and structured format.",
+      "You can track your selected plans, contributions, account activity, and estimated growth over time.",
   },
 ];
 
@@ -37,8 +37,8 @@ export function FaqSection() {
         {/* LEFT */}
         <SectionHeading
           eyebrow="FAQ"
-          title="Common questions, clearly answered"
-          description="Havenstone is designed to feel structured, transparent, and dependable. Here are answers to key questions about the platform and experience."
+          title="Clear answers to common questions"
+          description="Everything you need to understand how Havenstone works, from plan selection to tracking your investment progress."
         />
 
         {/* RIGHT */}
