@@ -88,7 +88,7 @@ export function UserInvestmentAccountsPage({
     },
     {
       href: "/account/dashboard/user/performance",
-      label: "View contribution history",
+      label: "Track investment performance",
     },
     {
       href: "/account/dashboard/user/documents",
@@ -118,7 +118,7 @@ export function UserInvestmentAccountsPage({
         </div>
 
         <Link
-          href="/account/dashboard/user/investments"
+          href="/account/dashboard/user/investment-accounts/new"
           className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
         >
           <Plus className="h-4 w-4" />
@@ -138,8 +138,8 @@ export function UserInvestmentAccountsPage({
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
               Review each account, track status across active and pending
-              accounts, and stay prepared for future contribution and
-              verification activity.
+              accounts, and monitor the health of your profile and verification
+              activity.
             </p>
           </div>
 
@@ -202,7 +202,7 @@ export function UserInvestmentAccountsPage({
                 status.
               </p>
               <Link
-                href="/account/dashboard/user/investments"
+                href="/account/dashboard/user/investment-accounts/new"
                 className="btn-primary mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
               >
                 <Plus className="h-4 w-4" />

@@ -91,16 +91,18 @@ export async function getCurrentUserInvestmentAccountsAction(): Promise<UserInve
     },
   });
 
-  const accounts = (investorProfile?.investmentAccounts ?? []).map((account) => ({
-    id: account.id,
-    accountType: formatLabel(account.investmentPlan.period),
-    status: account.status,
-    statusLabel: formatLabel(account.status),
-    balance: toNumber(account.balance),
-    currency: account.currency || "USD",
-    planName: account.investmentPlan.name,
-    openedDate: formatDate(account.openedAt),
-  }));
+  const accounts = (investorProfile?.investmentAccounts ?? []).map(
+    (account) => ({
+      id: account.id,
+      accountType: formatLabel(account.investmentPlan.period),
+      status: account.status,
+      statusLabel: formatLabel(account.status),
+      balance: toNumber(account.balance),
+      currency: account.currency || "USD",
+      planName: account.investmentPlan.name,
+      openedDate: formatDate(account.openedAt),
+    }),
+  );
 
   const totalAccountsCount = accounts.length;
   const activeAccountsCount = accounts.filter(

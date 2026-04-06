@@ -6,6 +6,7 @@ export const createInvestmentOrderSchema = z.object({
   investmentId: z.string().trim().min(1, "Select an investment."),
   investmentPlanId: z.string().trim().min(1, "Select an investment plan."),
   investmentPlanTierId: z.string().trim().min(1, "Select an investment tier."),
+
   amount: z
     .string()
     .trim()

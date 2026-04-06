@@ -192,14 +192,39 @@ export async function createInvestmentOrder(
     );
   }
 
+  const investmentAccount = await prisma.investmentAccount.findFirst({
+    where: {
+      investorProfileId: investorProfile.id,
+      investmentPlanId: selectedPlan.id,
+    },
+    select: {
+      id: true,
+      status: true,
+    },
+  });
+
+  if (!investmentAccount) {
+    return createErrorState(
+      "You need to create an investment account before placing an order.",
+    );
+  }
+
+  if (investmentAccount.status !== "ACTIVE") {
+    return createErrorState(
+      "Your investment account must be active to place an order. Please check your account status or contact support for assistance.",
+    );
+  }
+
   const order = await prisma.investmentOrder.create({
     data: {
       investorProfileId: investorProfile.id,
       investmentPlanId: selectedPlan.id,
       investmentPlanTierId: selectedTier.id,
+      investmentAccountId: investmentAccount.id,
       amount: new Prisma.Decimal(amount.toFixed(2)),
       currency: selectedPlan.currency,
       status: InvestmentOrderStatus.PENDING_PAYMENT,
+      commissionPercent: new Prisma.Decimal(0),
     },
     select: {
       id: true,

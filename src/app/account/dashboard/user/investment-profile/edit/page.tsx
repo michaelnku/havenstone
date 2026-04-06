@@ -21,11 +21,12 @@ export default async function Page() {
           </Link>
 
           <h1 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-            Edit Investment Profile
+            Update Investment Profile
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
-            Update your personal details to keep your Havenstone retirement and
-            investment account accurate and ready for secure verification.
+            Update your investment profile information to ensure we have the
+            most accurate details about your investment preferences and risk
+            tolerance.
           </p>
         </div>
 

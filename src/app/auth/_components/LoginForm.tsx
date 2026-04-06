@@ -62,7 +62,7 @@ export default function LoginForm() {
     <AuthShell
       eyebrow="Secure Sign In"
       title="Sign in to Havenstone"
-      description="Access your secure personal retirement account with a calm, professional sign-in experience built for clarity and trust."
+      description="Access your account and manage your investments with ease. Enter your credentials below to get started."
       footer={
         <div className="space-y-3 text-center">
           <p className="text-xs leading-relaxed text-slate-400">

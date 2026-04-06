@@ -124,9 +124,9 @@ export function UserInvestmentProfileDetailsPage({
             Investment Profile
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
-            Review and maintain your personal details to keep your Havenstone
-            retirement and investment account accurate, secure, and ready for
-            verification.
+            Review your current investment profile details and update any
+            information to keep your account ready for secure financial
+            servicing.
           </p>
         </div>
 

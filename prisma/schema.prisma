@@ -183,8 +183,9 @@ model InvestorProfile {
 
   kycDocuments KycDocument[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  withdrawalOrders WithdrawalOrder[]
 
   @@index([kycStatus])
   @@index([avatarFileId])
@@ -200,6 +201,8 @@ model InvestmentAccount {
   investorProfile InvestorProfile @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
   investmentPlan  InvestmentPlan  @relation(fields: [investmentPlanId], references: [id], onDelete: Restrict)
 
+  pendingWithdrawal Decimal @default(0)
+
   investmentOrders InvestmentOrder[]
   status           AccountStatus     @default(PENDING)
   balance          Decimal           @default(0) @db.Decimal(18, 2)
@@ -208,9 +211,11 @@ model InvestmentAccount {
 
   currency String @default("USD")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  withdrawalOrders WithdrawalOrder[]
 
+  @@unique([investorProfileId, investmentPlanId])
   @@index([investorProfileId])
   @@index([investmentPlanId])
   @@index([status])
@@ -308,11 +313,26 @@ model InvestmentPlanTier {
 }
 
 model InvestmentOrder {
-  id                   String  @id @default(cuid())
+  id                   String @id @default(cuid())
   investorProfileId    String
   investmentPlanId     String
-  investmentAccountId  String?
+  investmentAccountId  String
   investmentPlanTierId String
+
+  startDate    DateTime?
+  maturityDate DateTime?
+
+  expectedReturn Decimal?  @db.Decimal(18, 2)
+  completedAt    DateTime?
+  isMatured      Boolean   @default(false)
+
+  isWithdrawn Boolean @default(false)
+
+  commissionStatus  CommissionStatus @default(PENDING)
+  commissionPercent Decimal          @default(0) @db.Decimal(5, 2)
+
+  accruedProfit Decimal   @default(0) @db.Decimal(18, 2)
+  lastAccruedAt DateTime?
 
   amount   Decimal @db.Decimal(18, 2)
   currency String  @default("USD")
@@ -330,10 +350,12 @@ model InvestmentOrder {
   investmentPlanTier InvestmentPlanTier @relation(fields: [investmentPlanTierId], references: [id])
   investorProfile    InvestorProfile    @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
   investmentPlan     InvestmentPlan     @relation(fields: [investmentPlanId], references: [id], onDelete: Restrict)
-  investmentAccount  InvestmentAccount? @relation(fields: [investmentAccountId], references: [id], onDelete: SetNull)
+  investmentAccount  InvestmentAccount  @relation(fields: [investmentAccountId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  withdrawalOrders   WithdrawalOrder[]
+  investmentEarnings InvestmentEarning[]
 
   @@index([investorProfileId])
   @@index([investmentPlanId])
@@ -343,6 +365,63 @@ model InvestmentOrder {
   @@index([confirmedAt])
   @@index([cancelledAt])
   @@map("investment_order")
+}
+
+model InvestmentEarning {
+  id String @id @default(cuid())
+
+  investmentOrderId String
+
+  date   DateTime
+  amount Decimal  @db.Decimal(18, 2)
+
+  createdAt DateTime @default(now())
+
+  investmentOrder InvestmentOrder @relation(fields: [investmentOrderId], references: [id], onDelete: Cascade)
+
+  @@unique([investmentOrderId, date])
+}
+
+/// withdrals 
+model WithdrawalOrder {
+  id String @id @default(cuid())
+
+  externalReference String? @unique
+
+  investorProfileId   String
+  investmentAccountId String
+  investmentOrderId   String?
+
+  amount   Decimal @db.Decimal(18, 2)
+  currency String  @default("USD")
+
+  status WithdrawalStatus @default(PENDING)
+
+  payoutMethod  WithdrawalMethod
+  payoutAddress String?
+
+  reference String?
+
+  requestedAt DateTime  @default(now())
+  processedAt DateTime?
+  completedAt DateTime?
+  rejectedAt  DateTime?
+
+  rejectionReason String?
+  adminNotes      String?
+
+  investorProfile   InvestorProfile   @relation(fields: [investorProfileId], references: [id], onDelete: Cascade)
+  investmentAccount InvestmentAccount @relation(fields: [investmentAccountId], references: [id], onDelete: Cascade)
+  investmentOrder   InvestmentOrder?  @relation(fields: [investmentOrderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([investorProfileId])
+  @@index([investmentAccountId])
+  @@index([investmentOrderId])
+  @@index([status])
+  @@map("withdrawal_order")
 }
 
 /// KYC document records point to FileAsset
@@ -694,6 +773,14 @@ enum InvestmentOrderStatus {
   PARTIALLY_PAID
 }
 
+enum CommissionStatus {
+  PENDING
+  PAID
+  CANCELLED
+  PARTIALLY_PAID
+  VOID
+}
+
 enum InvestmentType {
   STOCKS
   BONDS
@@ -716,6 +803,20 @@ enum InvestmentCatalogStatus {
   ACTIVE
   INACTIVE
   ARCHIVED
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum WithdrawalMethod {
+  BANK_TRANSFER
+  CRYPTO_WALLET
 }
 
 enum KycStatus {

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/home/section-heading";
 import { SectionShell } from "@/components/home/section-shell";
+import { useState } from "react";
 
 const team = [
   {
@@ -27,8 +28,10 @@ const team = [
 ];
 
 export function ManagementTeamSection() {
-  const featured = team.find((m) => m.featured);
-  const others = team.filter((m) => !m.featured);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const featured = team[activeIndex];
+  const others = team.filter((_, i) => i !== activeIndex);
 
   return (
     <SectionShell id="team" className="relative py-20 sm:py-24 overflow-hidden">
@@ -62,35 +65,106 @@ export function ManagementTeamSection() {
           align="center"
         />
 
-        {/* YOUR EXISTING LAYOUT */}
-        <div className="relative mt-20 h-[420px] sm:h-[460px] lg:h-[480px]">
-          {/* LEFT */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 0.75, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute left-[2%] sm:left-[6%] lg:left-[8%] top-[65%] sm:top-[60%] -translate-y-1/2 scale-[0.85] sm:scale-[0.92] blur-[0.5px]"
-          >
-            <Card member={others[0]} />
-          </motion.div>
+        {/* RESPONSIVE LAYOUT */}
+        <div className="mt-16">
+          {/* MOBILE (CLEAN STACK — NO CRAMPING) */}
+          <div className="flex flex-col items-center gap-6 sm:gap-8 md:hidden">
+            <Card
+              member={featured}
+              featured
+              onFocus={() => setActiveIndex(activeIndex)}
+            />
 
-          {/* RIGHT */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 0.75, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute right-[2%] sm:right-[6%] lg:right-[8%] top-[65%] sm:top-[60%] -translate-y-1/2 scale-[0.85] sm:scale-[0.92] blur-[0.5px]"
-          >
-            <Card member={others[1]} />
-          </motion.div>
+            <div className="flex flex-col items-center gap-6">
+              <Card
+                member={others[0]}
+                onFocus={() => setActiveIndex(team.indexOf(others[0]))}
+              />
 
-          {/* CENTER */}
-          {featured && (
+              <Card
+                member={others[1]}
+                onFocus={() => setActiveIndex(team.indexOf(others[1]))}
+              />
+            </div>
+          </div>
+
+          {/* TABLET (LIGHT LAYERING) */}
+          <div className="relative hidden md:block lg:hidden h-[420px]">
+            {/* LEFT */}
+            <div className="absolute left-[10%] top-[65%] -translate-y-1/2 scale-[0.9] opacity-80">
+              <Card
+                member={others[0]}
+                onFocus={() => setActiveIndex(team.indexOf(others[0]))}
+              />
+            </div>
+
+            {/* RIGHT */}
+            <div className="absolute right-[10%] top-[65%] -translate-y-1/2 scale-[0.9] opacity-80">
+              <Card
+                member={others[1]}
+                onFocus={() => setActiveIndex(team.indexOf(others[1]))}
+              />
+            </div>
+
+            {/* CENTER */}
+            <div className="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 z-10">
+              <Card
+                member={featured}
+                featured
+                onFocus={() => setActiveIndex(activeIndex)}
+              />
+            </div>
+          </div>
+
+          {/* DESKTOP (FULL PREMIUM LAYER) */}
+          <div className="relative hidden lg:block h-[480px]">
+            {/* LEFT */}
             <motion.div
+              layout="position"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 0.75, x: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+              }}
+              className="absolute left-[8%] top-[60%] -translate-y-1/2 scale-[0.92] blur-[0.5px]"
+            >
+              <Card
+                member={others[0]}
+                onFocus={() => setActiveIndex(team.indexOf(others[0]))}
+              />
+            </motion.div>
+
+            {/* RIGHT */}
+            <motion.div
+              layout="position"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 0.75, x: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+              }}
+              className="absolute right-[8%] top-[60%] -translate-y-1/2 scale-[0.92] blur-[0.5px]"
+            >
+              <Card
+                member={others[1]}
+                onFocus={() => setActiveIndex(team.indexOf(others[1]))}
+              />
+            </motion.div>
+
+            {/* CENTER */}
+            <motion.div
+              layout="position"
               initial={{ opacity: 0, y: 30, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              className="absolute left-1/2 top-[50%] sm:top-[48%] lg:top-[45%] z-20 -translate-x-1/2 -translate-y-1/2"
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+              }}
+              className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 z-20"
             >
               {/* glow */}
               <motion.div
@@ -107,19 +181,21 @@ export function ManagementTeamSection() {
               />
 
               <motion.div
-                animate={{
-                  y: [0, -6, 0],
-                }}
+                animate={{ y: [0, -6, 0] }}
                 transition={{
                   duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
               >
-                <Card member={featured} featured />
+                <Card
+                  member={featured}
+                  featured
+                  onFocus={() => setActiveIndex(activeIndex)}
+                />
               </motion.div>
             </motion.div>
-          )}
+          </div>
         </div>
       </div>
     </SectionShell>
@@ -130,32 +206,32 @@ export function ManagementTeamSection() {
 function Card({
   member,
   featured = false,
+  onFocus,
 }: {
   member: (typeof team)[0];
   featured?: boolean;
+  onFocus?: () => void;
 }) {
   return (
     <motion.div
-      whileHover={{
-        y: -6,
-        scale: 1.02,
-      }}
-      className={`relative w-[260px] sm:w-[300px] rounded-[2rem] border p-5 sm:p-6 text-center transition
+      layout="position"
+      onMouseEnter={onFocus}
+      onClick={onFocus}
+      whileHover={{ y: -6, scale: 1.02 }}
+      className={`relative cursor-pointer w-[260px] sm:w-[300px] rounded-[2rem] border p-5 sm:p-6 text-center transition-all duration-300 ease-out
         ${
           featured
             ? "border-blue-400/20 bg-[linear-gradient(135deg,rgba(37,99,235,0.22),rgba(15,23,42,0.96))] shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
             : "border-white/8 bg-[linear-gradient(180deg,rgba(15,23,42,0.92),rgba(8,17,37,0.98))]"
         }`}
     >
-      {/* AVATAR */}
-      <div
-        className={`mx-auto flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border text-lg sm:text-xl font-semibold text-white
-          ${
-            featured
-              ? "border-blue-400/30 bg-blue-500/20"
-              : "border-white/10 bg-[linear-gradient(145deg,rgba(37,99,235,0.25),rgba(59,130,246,0.08))]"
-          }`}
-      >
+      {/* glow only if active */}
+      {featured && (
+        <div className="absolute inset-0 rounded-[2rem] bg-blue-500/20 blur-2xl" />
+      )}
+
+      {/* avatar */}
+      <div className="relative mx-auto flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border text-lg sm:text-xl font-semibold text-white border-white/10 bg-blue-500/20">
         {member.name
           .split(" ")
           .map((n) => n[0])

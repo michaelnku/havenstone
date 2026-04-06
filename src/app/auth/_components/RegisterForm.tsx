@@ -63,7 +63,7 @@ export default function RegisterForm() {
     <AuthShell
       eyebrow="Secure Onboarding"
       title="Create your Havenstone account"
-      description="Set up secure access to your personal retirement and investment platform with a professional onboarding experience built for long-term confidence."
+      description="Get started with a secure account to manage your investment profile. Your information is protected with industry-leading security measures."
       footer={
         <div className="space-y-3 text-center">
           <p className="text-xs leading-relaxed text-slate-400">

@@ -77,6 +77,27 @@ export const DASHBOARD_MENU = {
       ],
     },
     {
+      title: "Payouts",
+      links: [
+        {
+          name: "Withdrawals",
+          href: "/account/dashboard/user/withdrawals",
+          icon: Wallet,
+        },
+
+        {
+          name: "Payment Info",
+          href: "/account/dashboard/user/payment-info",
+          icon: Landmark,
+        },
+        {
+          name: "Transaction History",
+          href: "/account/dashboard/user/transactions",
+          icon: CircleDollarSign,
+        },
+      ],
+    },
+    {
       title: "Verification",
       links: [
         {
@@ -91,14 +112,20 @@ export const DASHBOARD_MENU = {
         },
       ],
     },
+
+    {
+      title: "Communication",
+      links: [
+        {
+          name: "Support Center",
+          href: "/account/dashboard/user/support",
+          icon: LifeBuoy,
+        },
+      ],
+    },
     {
       title: "Account",
       links: [
-        {
-          name: "Notifications",
-          href: "/account/dashboard/user/notifications",
-          icon: Bell,
-        },
         {
           name: "Profile",
           href: "/account/dashboard/user/profile",
@@ -108,16 +135,6 @@ export const DASHBOARD_MENU = {
           name: "Settings",
           href: "/account/dashboard/user/settings",
           icon: Settings,
-        },
-      ],
-    },
-    {
-      title: "Communication",
-      links: [
-        {
-          name: "Support Center",
-          href: "/account/dashboard/user/support",
-          icon: LifeBuoy,
         },
       ],
     },
@@ -288,13 +305,18 @@ export const DASHBOARD_MENU = {
       ],
     },
     {
-      title: "System",
+      title: "Communication",
       links: [
         {
-          name: "Notifications",
-          href: "/account/dashboard/admin/notifications",
-          icon: Bell,
+          name: "Support Center",
+          href: "/account/dashboard/admin/support",
+          icon: LifeBuoy,
         },
+      ],
+    },
+    {
+      title: "System",
+      links: [
         {
           name: "Profile",
           href: "/account/dashboard/admin/profile",
@@ -304,16 +326,6 @@ export const DASHBOARD_MENU = {
           name: "Settings",
           href: "/account/dashboard/admin/settings",
           icon: Settings,
-        },
-      ],
-    },
-    {
-      title: "Communication",
-      links: [
-        {
-          name: "Support Center",
-          href: "/account/dashboard/admin/support",
-          icon: LifeBuoy,
         },
       ],
     },
