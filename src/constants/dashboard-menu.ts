@@ -118,7 +118,7 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Support Center",
-          href: "/account/dashboard/user/support",
+          href: "/account/dashboard/support",
           icon: LifeBuoy,
         },
       ],
@@ -206,7 +206,7 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Support Center",
-          href: "/account/dashboard/moderator/support",
+          href: "/account/dashboard/support",
           icon: LifeBuoy,
         },
       ],
@@ -272,6 +272,11 @@ export const DASHBOARD_MENU = {
           href: "/account/dashboard/admin/platform-wallets",
           icon: Landmark,
         },
+        {
+          name: "Transactions",
+          href: "/account/dashboard/admin/transactions",
+          icon: CircleDollarSign,
+        },
       ],
     },
     {
@@ -309,7 +314,7 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Support Center",
-          href: "/account/dashboard/admin/support",
+          href: "/account/dashboard/support",
           icon: LifeBuoy,
         },
       ],
@@ -442,7 +447,7 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Support Center",
-          href: "/account/dashboard/super-admin/support",
+          href: "/account/dashboard/support",
           icon: LifeBuoy,
         },
       ],

@@ -17,6 +17,7 @@ model User {
   name          String
   email         String
   password      String?
+  username      String?
   emailVerified Boolean @default(false)
   image         String?
 
@@ -37,6 +38,10 @@ model User {
   investorProfile      InvestorProfile?
   auditLogs            AuditLog[]            @relation("ActorAuditLogs")
   cryptoFundingIntents CryptoFundingIntent[]
+
+  agentConversations  Conversation[]       @relation("ConversationAgent")
+  agentProfile        AgentProfile?
+  conversationMembers ConversationMember[]
 
   @@unique([email])
   @@index([profileAvatarFileAssetId])
@@ -667,6 +672,81 @@ model CryptoWebhookEvent {
   @@index([receivedAt])
 }
 
+/// *
+/// * ===========================
+/// * MESSAGE SYSTEM 
+/// * ===========================
+model Conversation {
+  id                  String  @id @default(cuid())
+  investmentAccountId String?
+
+  type   ConversationType
+  status ConversationStatus @default(OPEN)
+
+  subject       String?
+  lastMessageAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  agentId String?
+  agent   User?   @relation("ConversationAgent", fields: [agentId], references: [id])
+
+  priority ConversationPriority @default(NORMAL)
+
+  members  ConversationMember[]
+  messages Message[]
+
+  @@index([lastMessageAt])
+  @@index([type, status])
+}
+
+model AgentProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id             String @id @default(cuid())
+  conversationId String
+
+  senderId   String?
+  senderType SenderType
+
+  content String
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+
+  createdAt   DateTime  @default(now())
+  deliveredAt DateTime?
+
+  @@index([conversationId, createdAt])
+}
+
+model ConversationMember {
+  id             String @id @default(cuid())
+  conversationId String
+  userId         String
+
+  role ConversationRole @default(USER)
+
+  joinedAt DateTime @default(now())
+
+  unreadCount Int @default(0)
+
+  lastReadAt DateTime?
+
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
 /// site configuration
 model SiteConfiguration {
   id String @id @default("default")
@@ -866,4 +946,43 @@ enum FileStorageProvider {
   CLOUDINARY
   R2
   LOCAL
+}
+
+enum ConversationType {
+  SUPPORT
+  SYSTEM
+  ACCOUNT_ISSUES
+  INVESTMENT_INQUIRIES
+}
+
+enum ConversationStatus {
+  OPEN
+  RESOLVED
+  CLOSED
+  ARCHIVED
+  WAITING
+  CANCELLED
+  REJECTED
+  BLOCKED
+  DELETED
+}
+
+enum SenderType {
+  USER
+  SUPPORT
+  SYSTEM
+}
+
+enum ConversationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum ConversationRole {
+  USER
+  SUPPORT
+  ADMIN
+  SYSTEM
 }
