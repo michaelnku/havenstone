@@ -128,12 +128,12 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Profile",
-          href: "/account/dashboard/user/profile",
+          href: "/account/dashboard/profile",
           icon: User,
         },
         {
           name: "Settings",
-          href: "/account/dashboard/user/settings",
+          href: "/account/dashboard/settings",
           icon: Settings,
         },
       ],
@@ -324,12 +324,12 @@ export const DASHBOARD_MENU = {
       links: [
         {
           name: "Profile",
-          href: "/account/dashboard/admin/profile",
+          href: "/account/dashboard/profile",
           icon: User,
         },
         {
           name: "Settings",
-          href: "/account/dashboard/admin/settings",
+          href: "/account/dashboard/settings",
           icon: Settings,
         },
       ],

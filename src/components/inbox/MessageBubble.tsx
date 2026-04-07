@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatMessage } from "@/lib/types";
+import { ChatMessage } from "@/lib/types/chat.types";
 import { SenderType } from "@/generated/prisma/client";
 import { cn } from "@/lib/utils";
 import { MessageStatus } from "./MessageStatus";
@@ -31,14 +31,14 @@ export default function MessageBubble({
   const isUser = isOwnMessage(message, viewerUserId, viewerSenderType);
 
   return (
-    <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
+    <div
+      className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}
+    >
       <div
         className={cn(
           "max-w-[75%] rounded-2xl px-4 py-2 text-sm leading-relaxed",
           "shadow-[0_1px_2px_rgba(0,0,0,0.05)]",
-          isUser
-            ? "bg-[rgba(60,158,224,0.14)] text-slate-900"
-            : "bg-muted text-foreground",
+          isUser ? "bg-blue-600  text-white/[0.8]" : "bg-muted text-foreground",
         )}
       >
         <p className="whitespace-pre-wrap break-words">{message.content}</p>

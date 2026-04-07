@@ -113,9 +113,9 @@ export default function ChatBox({
 
   return (
     <div className="flex h-full min-h-0 flex-col justify-between overflow-hidden bg-background py-4">
-      <button onClick={onOpenMenu} className="text-white">
+      {/* { <button onClick={onOpenMenu} className="text-white">
         Back
-      </button>
+      </button>} */}
       <div className="shrink-0">
         <ChatHeader
           title={title}

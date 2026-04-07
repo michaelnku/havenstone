@@ -19,7 +19,7 @@ export function CreateInvestmentOrderHeader() {
         </div>
 
         <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-          Create Investment
+          Create Investment Order
         </h1>
         <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
           Choose an investment type, select a structured Havenstone plan, and

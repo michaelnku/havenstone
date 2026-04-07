@@ -1,0 +1,267 @@
+"use client";
+
+import { useEffect, useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  updateUserSchema,
+  updateUserSchemaType,
+} from "@/lib/zodValidations/user";
+import { UploadButton } from "@/utils/uploadthing";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { UserDTO } from "@/lib/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCurrentUserQuery } from "@/stores/useCurrentUserQuery";
+
+import { Eye } from "lucide-react";
+import Link from "next/link";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  deleteProfileAvatarAction,
+  updateUserProfile,
+} from "@/actions/auth/user";
+import { getUserInitials } from "@/lib/User-Initials/user";
+import { FormFieldWrapper } from "@/components/ui/form-field-wrapper";
+
+type Props = {
+  userData: UserDTO;
+};
+
+export default function ProfileForm({ userData }: Props) {
+  const { data: user } = useCurrentUserQuery(userData);
+
+  const [isPending, startTransition] = useTransition();
+
+  const [deletingKeys, setDeletingKeys] = useState<Set<string>>(new Set());
+
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const form = useForm<updateUserSchemaType>({
+    resolver: zodResolver(updateUserSchema),
+    defaultValues: {
+      name: user?.name ?? "",
+      username: user?.username ?? "",
+      profileAvatar: user?.profileAvatar ?? undefined,
+    },
+  });
+
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.name ?? "",
+        username: user.username ?? "",
+        profileAvatar: user.profileAvatar ?? undefined,
+      });
+    }
+  }, [user]);
+
+  const { control, handleSubmit, setValue, getValues } = form;
+
+  const onSubmit = (values: updateUserSchemaType) => {
+    startTransition(async () => {
+      await updateUserProfile(values).then((res) => {
+        if (res?.error) {
+          toast.error(res.error);
+          return;
+        }
+        toast.success("Profile updated");
+        router.refresh();
+        router.push("/account/dashboard/profile");
+      });
+    });
+  };
+
+  const deleteProfileImage = async () => {
+    const image = getValues("profileAvatar");
+    if (!image || !image?.key) return;
+
+    if (deletingKeys.has(image.key)) return;
+
+    setDeletingKeys((p) => new Set(p).add(image.key));
+
+    try {
+      await deleteProfileAvatarAction();
+      setValue("profileAvatar", null, {
+        shouldDirty: true,
+      });
+      toast.success("Profile image removed");
+      window.location.reload();
+    } catch {
+      toast.error("Failed to remove image");
+    } finally {
+      setDeletingKeys((p) => {
+        const next = new Set(p);
+        next.delete(image.key);
+        return next;
+      });
+    }
+  };
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  const avatar =
+    form.watch("profileAvatar")?.url ??
+    user?.profileAvatar?.url ??
+    user?.image ??
+    null;
+  const initials = getUserInitials({
+    name: user?.name ?? null,
+    username: user?.username ?? null,
+    email: user?.email ?? null,
+  });
+
+  return (
+    <Card>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Profile Information</CardTitle>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href={"/profile"}
+              className="text-[var(--brand-blue)] hover:text-[var(--brand-blue-hover)]"
+            >
+              <Eye />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Profile</p>
+          </TooltipContent>
+        </Tooltip>
+      </CardHeader>
+
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* ================= PROFILE IMAGE ================= */}
+          <section className="border-t pt-6">
+            <div className="flex flex-col items-center gap-4">
+              {/* AVATAR */}
+              <div className="relative w-32 h-32">
+                {avatar ? (
+                  <Image
+                    src={avatar}
+                    alt="Profile image"
+                    fill
+                    className="rounded-full object-cover border"
+                  />
+                ) : (
+                  <div className="w-full h-full rounded-full border flex items-center justify-center text-sm text-muted-foreground">
+                    <div className="uppercase text-xl font-semibold">
+                      {initials}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <span>
+                <UploadButton
+                  endpoint="profileAvatar"
+                  onClientUploadComplete={async (res) => {
+                    const file = res[0];
+                    if (!file) {
+                      toast.error("Upload failed");
+                      return;
+                    }
+
+                    setValue(
+                      "profileAvatar",
+                      { url: file.url, key: file.key },
+                      { shouldDirty: true },
+                    );
+
+                    await updateUserProfile({
+                      profileAvatar: {
+                        url: file.url,
+                        key: file.key,
+                      },
+                    });
+
+                    queryClient.invalidateQueries({
+                      queryKey: ["currentUser"],
+                    });
+
+                    toast.success("Profile image updated");
+                  }}
+                  className="
+                    ut-button:bg-blue-600
+                    ut-button:text-blue-500
+                    ut-button:border
+                    ut-button:border-blue-500/30
+                    ut-button:rounded-full
+                    ut-button:px-5
+                    ut-button:py-2
+                    ut-button:text-sm
+                    hover:ut-button:bg-blue-500/20
+                  "
+                />
+
+                {avatar && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={deletingKeys.has(
+                      form.watch("profileAvatar")?.key ?? "",
+                    )}
+                    onClick={deleteProfileImage}
+                    className="text-red-600 text-sm"
+                  >
+                    Remove photo
+                  </Button>
+                )}
+              </span>
+            </div>
+          </section>
+
+          {/* ================= FIELDS ================= */}
+
+          <FormFieldWrapper control={control} name="name" label="Full Name">
+            {(field) => (
+              <Input
+                {...field}
+                placeholder="John Doe"
+                className="bg-white/[0.04] border-white/10 focus:border-blue-400"
+              />
+            )}
+          </FormFieldWrapper>
+
+          <FormFieldWrapper control={control} name="username" label="Username">
+            {(field) => (
+              <Input
+                {...field}
+                placeholder="Doe"
+                className="bg-white/[0.04] border-white/10 focus:border-blue-400"
+              />
+            )}
+          </FormFieldWrapper>
+
+          {/* ================= EMAIL ================= */}
+          <div className="text-sm text-muted-foreground">
+            Email: <span className="font-medium">{user.email}</span>
+          </div>
+
+          {/* ================= ACTION ================= */}
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="bg-blue-600 hover:bg-blue-500 text-white"
+          >
+            {isPending ? "Saving…" : "Save Changes"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

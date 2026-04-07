@@ -21,6 +21,10 @@ model User {
   emailVerified Boolean @default(false)
   image         String?
 
+  isDeleted           Boolean   @default(false)
+  deletedAt           DateTime?
+  scheduledDeletionAt DateTime?
+
   role UserRole @default(USER)
 
   hasCompletedOnboarding Boolean   @default(false)

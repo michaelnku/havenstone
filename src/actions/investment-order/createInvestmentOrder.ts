@@ -192,7 +192,7 @@ export async function createInvestmentOrder(
     );
   }
 
-  const investmentAccount = await prisma.investmentAccount.findFirst({
+  let investmentAccount = await prisma.investmentAccount.findFirst({
     where: {
       investorProfileId: investorProfile.id,
       investmentPlanId: selectedPlan.id,
@@ -204,8 +204,26 @@ export async function createInvestmentOrder(
   });
 
   if (!investmentAccount) {
+    investmentAccount = await prisma.investmentAccount.upsert({
+      where: {
+        investorProfileId_investmentPlanId: {
+          investorProfileId: investorProfile.id,
+          investmentPlanId: selectedPlan.id,
+        },
+      },
+      update: {},
+      create: {
+        investorProfileId: investorProfile.id,
+        investmentPlanId: selectedPlan.id,
+        currency: selectedPlan.currency,
+        status: "ACTIVE",
+      },
+    });
+  }
+
+  if (investmentAccount.status !== "ACTIVE") {
     return createErrorState(
-      "You need to create an investment account before placing an order.",
+      "Your investment account is not active. Please contact support.",
     );
   }
 

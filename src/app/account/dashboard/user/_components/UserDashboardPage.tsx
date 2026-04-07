@@ -4,6 +4,7 @@ import {
   Landmark,
   Layers3,
   type LucideIcon,
+  ShoppingBagIcon,
   Wallet,
 } from "lucide-react";
 
@@ -20,6 +21,7 @@ export type UserDashboardStats = {
   accountBalance: number;
   totalInvestment: number;
   investmentType: string;
+  totalEarnedProfits: number;
 };
 
 function DashboardStatCard({
@@ -97,33 +99,35 @@ export default function UserDashboardPage({
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-5">
           <DashboardStatCard
-            title="Investments"
-            value={String(stats.investmentsCount)}
-            subtitle="Total active and historical entries"
-            icon={BriefcaseBusiness}
+            title="Account Balance"
+            value={formatUsd(stats.accountBalance)}
+            subtitle="Available wallet balance"
+            icon={Wallet}
           />
-
+          <DashboardStatCard
+            title="Earned profits"
+            value={formatUsd(stats.totalEarnedProfits)}
+            subtitle="Total earnings across investments"
+            icon={ArrowUpRight}
+          />
           <DashboardStatCard
             title="Current Investment"
             value={formatUsd(stats.currentInvestment)}
             subtitle="Latest active investment position"
             icon={Layers3}
           />
-
-          <DashboardStatCard
-            title="Account Balance"
-            value={formatUsd(stats.accountBalance)}
-            subtitle="Available wallet balance"
-            icon={Wallet}
-          />
-
           <DashboardStatCard
             title="Total Investment"
             value={formatUsd(stats.totalInvestment)}
             subtitle="Combined capital across investments"
             icon={Landmark}
           />
-
+          <DashboardStatCard
+            title="Active Orders"
+            value={String(stats.investmentsCount)}
+            subtitle="Total active and historical entries"
+            icon={ShoppingBagIcon}
+          />
           <DashboardStatCard
             title="Investment Type"
             value={stats.investmentType || "-"}

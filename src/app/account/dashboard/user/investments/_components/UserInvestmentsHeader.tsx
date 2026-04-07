@@ -19,7 +19,7 @@ export function UserInvestmentsHeader() {
         </div>
 
         <h1 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-          My Investments
+          Investment Orders
         </h1>
         <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
           Review your Havenstone investment orders, follow payment and
@@ -33,7 +33,7 @@ export function UserInvestmentsHeader() {
         className="btn-primary inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
       >
         <Plus className="h-4 w-4" />
-        New investment
+        New order
       </Link>
     </div>
   );

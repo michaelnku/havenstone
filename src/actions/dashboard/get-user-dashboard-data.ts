@@ -70,6 +70,12 @@ export async function getUserDashboardDataAction(): Promise<UserDashboardData> {
           },
         },
       },
+      investmentOrders: {
+        select: {
+          accruedProfit: true,
+          amount: true,
+        },
+      },
     },
   });
 
@@ -78,34 +84,43 @@ export async function getUserDashboardDataAction(): Promise<UserDashboardData> {
     investmentAccounts.find(
       (account) => account.status === AccountStatus.ACTIVE,
     ) ?? investmentAccounts[0];
-  const totalAccountBalance = investmentAccounts.reduce(
-    (sum, account) => sum + toNumber(account.balance),
-    0,
-  );
-  const currentAccountBalance = activeAccount
-    ? toNumber(activeAccount.balance)
-    : 0;
+
+  const totalInvested =
+    investorProfile?.investmentOrders.reduce(
+      (sum, order) => sum + toNumber(order.amount),
+      0,
+    ) ?? 0;
+
+  const totalEarnedProfits =
+    investorProfile?.investmentOrders.reduce(
+      (sum, order) => sum + toNumber(order.accruedProfit),
+      0,
+    ) ?? 0;
+
+  const totalAccountBalance = totalInvested + totalEarnedProfits;
+
+  const currentAccountBalance = toNumber(activeAccount?.balance) ?? 0;
+
   const activeAccountTierFloor =
     activeAccount?.investmentPlan.tiers[0]?.minAmount ?? null;
-  const totalInvestmentCommitment = investmentAccounts.reduce(
-    (sum, account) =>
-      sum + toNumber(account.investmentPlan.tiers[0]?.minAmount ?? 0),
-    0,
-  );
+
   const investmentType =
     activeAccount?.investmentPlan.investment.name ??
     formatLabel(activeAccount?.investmentPlan.investment.type) ??
     activeAccount?.investmentPlan.name;
 
   return {
-    userName: user.name?.trim() || "Investor",
+    userName: user.name?.trim() || "Client",
     stats: {
       investmentsCount: investmentAccounts.length,
       currentInvestment:
         toNumber(activeAccountTierFloor) || currentAccountBalance,
+
       accountBalance: totalAccountBalance,
-      totalInvestment: totalInvestmentCommitment || totalAccountBalance,
+      totalInvestment: totalInvested,
+
       investmentType: investmentType || "Not selected",
+      totalEarnedProfits: totalEarnedProfits,
     },
   };
 }

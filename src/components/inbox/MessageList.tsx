@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatMessage } from "@/lib/types";
+import { ChatMessage } from "@/lib/types/chat.types";
 import { SenderType } from "@/generated/prisma/client";
 import MessageBubble from "./MessageBubble";
 import TypingIndicator from "./TypingIndicator";

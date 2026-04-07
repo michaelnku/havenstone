@@ -48,7 +48,9 @@ export function UserInvestmentsList({
   createdOrderId,
 }: UserInvestmentsListProps) {
   if (data.orders.length === 0) {
-    return <UserInvestmentsEmptyState hasInvestorProfile={data.hasInvestorProfile} />;
+    return (
+      <UserInvestmentsEmptyState hasInvestorProfile={data.hasInvestorProfile} />
+    );
   }
 
   return (
@@ -62,8 +64,10 @@ export function UserInvestmentsList({
                 Investment order created successfully
               </p>
               <p className="mt-1 text-sm leading-6 text-emerald-100/85">
-                Order reference <span className="font-medium text-white">{createdOrderId}</span>{" "}
-                has been added to your investment list and is now pending payment.
+                Order reference{" "}
+                <span className="font-medium text-white">{createdOrderId}</span>{" "}
+                has been added to your investment list and is now pending
+                payment.
               </p>
             </div>
           </div>
@@ -116,7 +120,7 @@ export function UserInvestmentsList({
           className="btn-primary inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold"
         >
           <Plus className="h-4 w-4" />
-          New investment
+          New order
         </Link>
       </div>
     </div>
